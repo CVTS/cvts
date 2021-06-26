@@ -1,0 +1,5 @@
+---
+- import_playbook: 0.bootstrap.yaml
+- import_playbook: 1.setup.yaml
+# - import_playbook: B-fail2ban-ssh.yml
+# - import_playbook: C-enable-watchdog.yml

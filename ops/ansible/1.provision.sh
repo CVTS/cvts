@@ -2,9 +2,7 @@
 set -eu
 
 main() {
-
-    ansible-playbook -i inventory provision.yaml
-
+    ansible-playbook -i inventory playbook.yaml
 }
 
 main "$@"
