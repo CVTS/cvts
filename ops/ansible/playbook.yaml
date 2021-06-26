@@ -1,5 +1,6 @@
 ---
-- import_playbook: 0.bootstrap.yaml
-- import_playbook: 1.setup.yaml
+# - vars:
+#     ansible_become_pass: "{{ lookup('env', 'CVTS_BECOME_PASSWORD') }}"
+- import_playbook: mapmatcher.yaml
 # - import_playbook: B-fail2ban-ssh.yml
 # - import_playbook: C-enable-watchdog.yml

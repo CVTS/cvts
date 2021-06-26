@@ -1,0 +1,5 @@
+- hosts: mapmatcher
+  gather_facts: false
+  roles:
+    - common
+    - mapmatcher

@@ -1,0 +1,8 @@
+- name: Auth key
+  authorized_key: user=ubuntu key="{{ item }}"
+  with_file:
+    - deploy_keys/jamie.pub
+    - deploy_keys/adam.pub
+    - deploy_keys/pedro.pub
+    - deploy_keys/simon.pub
+  tags: users

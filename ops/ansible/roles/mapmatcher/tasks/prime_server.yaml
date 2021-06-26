@@ -1,0 +1,19 @@
+- block:
+  - name: Git checkout
+    ansible.builtin.git:
+      repo: "https://github.com/CVTS/prime_server.git"
+      dest: "{{ prime_server_dir }}"
+
+  - name: Build Prime Server
+    shell:
+      chdir: "{{ prime_server_dir }}"
+      cmd: "./autogen.sh && ./configure && make -j8"
+      creates: "{{ prime_server_dir }}/prime_serverd"
+
+  - name: Install Prime Server
+    ansible.builtin.shell:
+      chdir: "{{ prime_server_dir }}"
+      cmd: "make install"
+      creates: /usr/local/bin/prime_serverd
+    become: true
+  tags: prime_server

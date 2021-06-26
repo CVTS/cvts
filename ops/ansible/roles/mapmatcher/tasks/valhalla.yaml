@@ -1,0 +1,30 @@
+- block:
+  - name: Add Valhalla repository into sources list
+    ansible.builtin.apt_repository:
+      repo: ppa:valhalla-core/valhalla
+      update_cache: true
+      state: present
+
+  - name: Git checkout Valhalla
+    ansible.builtin.git:
+      repo: "https://github.com/CVTS/valhalla.git"
+      dest: "{{ valhalla_dir }}"
+
+  - name: Creates build directory for CMake
+    ansible.builtin.file:
+      path: "{{ valhalla_dir }}/build"
+      state: directory
+
+  - name: Build Valhalla
+    ansible.builtin.shell:
+      chdir: "{{ valhalla_dir }}/build"
+      cmd: "cmake .. -DCMAKE_BUILD_TYPE=Release && make -j8 && make install"
+      creates: "{{ valhalla_dir }}/build/valhalla_service"
+
+  - name: Install Valhalla
+    ansible.builtin.shell:
+      chdir: "{{ valhalla_dir }}/build"
+      cmd: "make install"
+      creates: /usr/local/bin/valhalla_service
+    become: true
+  tags: valhalla

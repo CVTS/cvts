@@ -1,0 +1,39 @@
+- name: Install required APT packages
+  tags: apt
+  apt:
+    pkg:
+    - cmake
+    - make
+    - libtool
+    - pkg-config
+    - g++
+    - gcc
+    - curl
+    - unzip
+    - jq
+    - lcov
+    - protobuf-compiler
+    - vim-common
+    - locales
+    - libboost-all-dev
+    - libcurl4-openssl-dev
+    - zlib1g-dev
+    - liblz4-dev
+    - libprime-server-dev
+    - libprotobuf-dev
+    - prime-server-bin
+    - libgeos-dev
+    - libgeos++-dev
+    - libluajit-5.1-dev
+    - libspatialite-dev
+    - libsqlite3-dev
+    - wget
+    - sqlite3
+    - spatialite-bin
+    - python-all-dev
+    - autoconf
+    - automake
+    - libtool
+    - libcurl4-openssl-dev
+    - libzmq3-dev
+    - libczmq-dev

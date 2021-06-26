@@ -1,0 +1,6 @@
+- include_tasks: apt.yaml
+  tags: apt
+- include_tasks: prime_server.yaml
+  tags: prime_server
+- include_tasks: valhalla.yaml
+  tags: valhalla

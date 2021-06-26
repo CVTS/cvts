@@ -1,0 +1,2 @@
+ansible_ssh_user: ubuntu
+ansible_become_pass: "{{ lookup('env', 'CVTS_BECOME_PASSWORD') }}"
