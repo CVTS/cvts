@@ -1,0 +1,7 @@
+- hosts: postgis
+  gather_facts: false
+  vars:
+    ansible_os_family: Debian
+  roles:
+    # - common
+    - postgis

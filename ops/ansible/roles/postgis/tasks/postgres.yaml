@@ -1,0 +1,106 @@
+- block:
+
+  # - name: Add Apt signing key for postgresql repo
+  #   ansible.builtin.apt_key:
+  #     url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+  #     state: present
+  #   become: true
+
+  # - name: Add Postgres repo
+  #   ansible.builtin.apt_repository:
+  #     repo: deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main
+  #     update_cache: true
+  #     state: present
+  #   become: true
+
+  # - name: Install required APT packages
+  #   tags: apt
+  #   become: true
+  #   apt:
+  #     pkg:
+  #     - postgresql
+  #     - postgis
+  #     - acl                     # required so that ansible can change to un-priveledged users
+  #     - python3-pip
+  #     - libpq-dev
+  #     - python3-psycopg2
+  #     - postgresql-13-postgis-3
+  #     - postgresql-13-pgrouting
+
+  # - name: Install python packages
+  #   pip:
+  #     name:
+  #     - psycopg2 # needed so that
+
+  # - name: ensure the PostgreSQL service is running
+  #   service:
+  #     name: postgresql
+  #     state: started
+  #     enabled: yes
+
+  - name: edit postgresql.conf to change listen address to *
+    replace:
+      dest: "{{ pg_conf }}"
+      regexp: "#listen_addresses = 'localhost'"
+      replace: "listen_addresses = '*'"
+      backup: yes
+    become: true
+    notify: restart pg
+
+  - name: edit postgresql.conf to change pg_data to big disk
+    replace:
+      dest: "{{ pg_conf }}"
+      regexp: "^data_directory = .*$"
+      replace: "data_directory = '/mnt/data/pg_data'"
+      backup: yes
+    become: true
+    notify: restart pg
+
+  - name: append to pg_hba.conf to add password auth
+    lineinfile:
+      dest: "{{ pg_hba }}"
+      line: "host    all             all             0.0.0.0/0               md5"
+    become: true
+    notify: restart pg
+
+  - name: explicitly set default client_encoding
+    lineinfile:
+      dest: "{{ pg_conf }}"
+      line: "client_encoding = utf8"
+    become: true
+    notify: restart pg
+
+  - name: create the database user
+    postgresql_user:
+      name: "{{ db_user }}"
+      password: "{{ db_pass }}"
+    become: true
+    become_user: postgres
+
+  - name: create the database
+    postgresql_db:
+      owner: "{{ db_user }}"
+      name: "{{ db_name }}"
+      encoding: UTF-8
+      lc_collate: en_US.utf8
+      lc_ctype: en_US.utf8
+      template: template0
+    become: true
+    become_user: postgres
+
+  - name: install postgis extension
+    postgresql_ext:
+      name: postgis
+      db: "{{ db_name }}"
+    become: true
+    become_user: postgres
+
+  - name: Allow connections on the pg port
+    ansible.builtin.iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: 5432
+      jump: ACCEPT
+    become: true
+
+  tags: postgres

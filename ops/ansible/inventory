@@ -2,9 +2,22 @@ all:
   children:
     mapmatcher:
       hosts:
-        103.160.90.151:2235
+        cvts-mapmatcher
       vars:
         ansible_ssh_port: 2235
+        ansible_python_intepreter: /usr/bin/python3
+    postgis:
+      hosts:
+        cvts-postgis
+      vars:
+        ansible_ssh_port: 2231
+        ansible_python_intepreter: /usr/bin/python3
+    localhost:
+      hosts:
+        127.0.0.1
+      vars:
+        ansible_connection: local
+
+
   vars:
-    ansible_python_interpreter: /usr/bin/python3
     ansible_ssh_user: ubuntu

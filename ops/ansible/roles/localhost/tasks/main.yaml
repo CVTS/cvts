@@ -1,0 +1,26 @@
+- set_fact:
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
+  tags: localhost
+
+- pip:
+    name: stormssh
+
+- name: make sure that ssh config has required alias for mapmatcher host (used in inventory)
+  community.general.ssh_config:
+    user: "{{ ansible_user_id }}"
+    group: "staff"
+    host: "cvts-mapmatcher"
+    hostname: "103.160.90.151"
+    port: '2235'
+    state: present
+  tags: localhost
+
+- name: make sure that ssh config has required alias for postgis host (used in inventory)
+  community.general.ssh_config:
+    user: "{{ ansible_user_id }}"
+    group: "staff"
+    host: "cvts-postgis"
+    hostname: "103.160.90.151"
+    port: '2231'
+    state: present
+  tags: localhost

@@ -1,36 +1,67 @@
-- name: Check ubuntu user
-  command: ssh -q -o BatchMode=yes -o ConnectTimeout=3 ubuntu@{{ inventory_hostname }} -p {{ ansible_ssh_port }} "echo OK"
+- debug:
+    msg: "{{ ansible_user_id }}"
+  tags: bootstrap
+
+- debug:
+    msg: "{{ ansible_user_id }}"
+  tags: bootstrap
   delegate_to: 127.0.0.1
-  changed_when: false
-  failed_when: false
-  register: check_ubuntu_user
-  tags: bootstrap
 
-- block:
-  - name: Add the user 'ubuntu' with a specific groups
-    ansible.builtin.user:
-      name: ubuntu
-      groups: sudo
-      password: "$1$IveBeenA$UlFfzeZc0GDrihfkKvKdY."
-      shell: /usr/bin/bash
 
-  - name: Auth key
-    authorized_key: user=ubuntu key="{{ item }}"
-    with_file:
-      - deploy_keys/jamie.pub
-      - deploy_keys/adam.pub
-      - deploy_keys/pedro.pub
-      - deploy_keys/simon.pub
 
-  - name: Disable root login over SSH
-    lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin no" state=present
-    notify:
-      - restart sshd
-
-  - name: Disable password login
-    lineinfile: dest=/etc/ssh/sshd_config regexp="^PasswordAuthentication" line="PasswordAuthentication no" state=present
-    notify:
-      - restart sshd
-  when: not "OK" in check_ubuntu_user.stdout
-  remote_user: root
-  tags: bootstrap
+# - name: Check ubuntu user
+#   command: ssh -q -o BatchMode=yes -o ConnectTimeout=3 ubuntu@{{ inventory_hostname }} -p {{ ansible_ssh_port }} "echo OK"
+#   delegate_to: 127.0.0.1
+#   changed_when: false
+#   failed_when: false
+#   register: check_ubuntu_user
+#   tags: bootstrap
+#
+#
+# - block:
+#   - name: switch to root user
+#     set_fact:
+#       ansible_ssh_user: root
+#
+#   - name: Add the user 'ubuntu' with a specific groups
+#     remote_user: root
+#     ansible.builtin.user:
+#       name: ubuntu
+#       groups: sudo
+#       password: "$1$IveBeenA$UlFfzeZc0GDrihfkKvKdY."
+#       shell: /usr/bin/bash
+#
+#   - name: Auth key
+#     remote_user: root
+#     authorized_key: user=ubuntu key="{{ item }}"
+#     with_file:
+#       - deploy_keys/jamie.pub
+#       - deploy_keys/adam.pub
+#       - deploy_keys/pedro.pub
+#       - deploy_keys/simon.pub
+#
+#   - name: Disable root login over SSH
+#     remote_user: root
+#     lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin no" state=present
+#     notify:
+#       - restart sshd
+#
+#   - name: Disable password login
+#     remote_user: root
+#     lineinfile: dest=/etc/ssh/sshd_config regexp="^PasswordAuthentication" line="PasswordAuthentication no" state=present
+#     notify:
+#       - restart sshd
+#
+#   - name: switch back to the ubuntu user
+#     set_fact:
+#       ansible_ssh_user: ubuntu
+#
+#   when: not "OK" in check_ubuntu_user.stdout
+#   tags: bootstrap
+#
+# - name: Remove floppy support
+#   tags: bootstrap
+#   ansible.builtin.lineinfile:
+#     path: /etc/modprobe.d/blacklist.conf
+#     line: "blacklist floppy"
+#   become: true

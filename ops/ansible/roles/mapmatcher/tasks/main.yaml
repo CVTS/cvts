@@ -1,3 +1,7 @@
+- include_tasks: disks.yaml
+  tags: disks
+- include_tasks: users.yaml
+  tags: users
 - include_tasks: apt.yaml
   tags: apt
 - include_tasks: prime_server.yaml

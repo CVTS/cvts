@@ -1,0 +1,21 @@
+- block:
+  - name: Creates mount directory for big_data
+    ansible.builtin.file:
+      path: "/mnt/data"
+      state: directory
+      owner: ubuntu
+    become: true
+  - name: Make sure our large disk is mounted
+    ansible.posix.mount:
+      path: /mnt/data
+      src: UUID=ab8a650c-c760-4643-a8b7-ee4feeb24350
+      fstype: ext4
+      state: mounted
+    become: true
+  - name: Creates pg_data directory on the big disk
+    ansible.builtin.file:
+      path: "/mnt/data/pg_data"
+      state: directory
+      owner: postgres
+    become: true
+  tags: disks

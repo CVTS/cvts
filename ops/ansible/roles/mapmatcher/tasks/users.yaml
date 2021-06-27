@@ -1,0 +1,23 @@
+- block:
+  - name: Add the users
+    ansible.builtin.user:
+      name: "{{ item }}"
+      groups: sudo
+      password: "$1$IveBeenA$UlFfzeZc0GDrihfkKvKdY."
+      shell: /usr/bin/bash
+    with_items:
+      - simonk
+      - adam
+
+  - name: Keys for Simon
+    authorized_key: user=simonk key="{{ item }}"
+    with_file:
+      - deploy_keys/simon.pub
+
+  - name: Keys for Adam
+    authorized_key: user=adam key="{{ item }}"
+    with_file:
+      - deploy_keys/adam.pub
+
+  tags: users
+  become: true

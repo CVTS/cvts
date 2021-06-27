@@ -1,0 +1,8 @@
+ansible_become_pass: "{{ lookup('env', 'CVTS_BECOME_PASSWORD') }}"
+pg_version: 13
+pg_conf: "/etc/postgresql/{{ pg_version }}/main/postgresql.conf"
+pg_hba: "/etc/postgresql/{{ pg_version }}/main/pg_hba.conf"
+pg_dir: "/var/lib/postgresql/{{ pg_version }}/main"
+db_user: "cvts"
+db_pass: "{{ lookup('env', 'CVTS_DB_PASSWORD') }}"
+db_name: "cvts"
