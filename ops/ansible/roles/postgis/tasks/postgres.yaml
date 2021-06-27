@@ -1,42 +1,42 @@
 - block:
 
-  # - name: Add Apt signing key for postgresql repo
-  #   ansible.builtin.apt_key:
-  #     url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
-  #     state: present
-  #   become: true
+  - name: Add Apt signing key for postgresql repo
+    ansible.builtin.apt_key:
+      url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+      state: present
+    become: true
 
-  # - name: Add Postgres repo
-  #   ansible.builtin.apt_repository:
-  #     repo: deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main
-  #     update_cache: true
-  #     state: present
-  #   become: true
+  - name: Add Postgres repo
+    ansible.builtin.apt_repository:
+      repo: deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main
+      update_cache: true
+      state: present
+    become: true
 
-  # - name: Install required APT packages
-  #   tags: apt
-  #   become: true
-  #   apt:
-  #     pkg:
-  #     - postgresql
-  #     - postgis
-  #     - acl                     # required so that ansible can change to un-priveledged users
-  #     - python3-pip
-  #     - libpq-dev
-  #     - python3-psycopg2
-  #     - postgresql-13-postgis-3
-  #     - postgresql-13-pgrouting
+  - name: Install required APT packages
+    tags: apt
+    become: true
+    apt:
+      pkg:
+      - postgresql
+      - postgis
+      - acl                     # required so that ansible can change to un-priveledged users
+      - python3-pip
+      - libpq-dev
+      - python3-psycopg2
+      - postgresql-13-postgis-3
+      - postgresql-13-pgrouting
 
-  # - name: Install python packages
-  #   pip:
-  #     name:
-  #     - psycopg2 # needed so that
+  - name: Install python packages
+    pip:
+      name:
+      - psycopg2 # needed so that
 
-  # - name: ensure the PostgreSQL service is running
-  #   service:
-  #     name: postgresql
-  #     state: started
-  #     enabled: yes
+  - name: ensure the PostgreSQL service is running
+    service:
+      name: postgresql
+      state: started
+      enabled: yes
 
   - name: edit postgresql.conf to change listen address to *
     replace:
