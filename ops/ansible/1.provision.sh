@@ -2,7 +2,7 @@
 set -eu
 
 main() {
-    ansible-playbook -i inventory playbook.yaml
+    ansible-playbook -i inventory playbook.yaml --extra-vars "ansible_sudo_pass=${CVTS_PASSWORD}"
 }
 
 main "$@"

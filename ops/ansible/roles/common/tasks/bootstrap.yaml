@@ -25,9 +25,7 @@
     authorized_key: user=ubuntu key="{{ item }}"
     with_file:
       - deploy_keys/jamie.pub
-      - deploy_keys/adam.pub
       - deploy_keys/pedro.pub
-      - deploy_keys/simon.pub
 
   - name: Disable root login over SSH
     remote_user: root
