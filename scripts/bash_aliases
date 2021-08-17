@@ -1,0 +1,32 @@
+# CVTS related vars
+#export CVTS_INITIAL_SETUP_AND_TEST=True
+
+function cvts_prod() {
+    export CVTS_OUTPUT_PATH=/var/local/cvts/output
+    export CVTS_POSTGRES_DB=cvts
+    export CVTS_POSTGRES_CONNECTION_STRING=postgresql://"$CVTS_POSTGRES_USER":"$CVTS_POSTGRES_PASS"@"$CVTS_POSTGRES_HOST":"$CVTS_POSTGRES_PORT"/"$CVTS_POSTGRES_DB"
+    eval $(cvts && python cvts/settings.py)
+}
+
+function cvts_test() {
+    export CVTS_OUTPUT_PATH=/var/local/cvts/test_output
+    export CVTS_POSTGRES_DB=cvts_test
+    export CVTS_POSTGRES_CONNECTION_STRING=postgresql://"$CVTS_POSTGRES_USER":"$CVTS_POSTGRES_PASS"@"$CVTS_POSTGRES_HOST":"$CVTS_POSTGRES_PORT"/"$CVTS_POSTGRES_DB"
+    eval $(cvts && python cvts/settings.py)
+}
+
+# cvts aliases
+alias deact='decativate 2>/dev/null'
+alias act='deact; . ~/cvts/venv/bin/activate && eval `python ~/cvts/cvts/settings.py`'
+alias cvts='cd ~/cvts && act'
+alias output='act && cd "$CVTS_OUT_PATH"'
+alias work='act && cd "$CVTS_WORK_PATH"'
+alias pgcvts='psql "$CVTS_POSTGRES_CONNECTION_STRING"'
+
+export CVTS_DEBUG=False
+export CVTS_WORK_PATH=/var/local/cvts
+export CVTS_POSTGRES_USER=cvts
+export CVTS_POSTGRES_PASS=csiro_and_world_bank
+export CVTS_POSTGRES_PORT=5432
+export CVTS_POSTGRES_HOST=localhost
+cvts_test
