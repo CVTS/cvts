@@ -31,6 +31,9 @@ valhalla_build_config \
     --service-limits-trace-max-distance 10000000 \
     --service-limits-trace-max-shape 1000000 \
     --mjolnir-tile-dir ${PWD}/valhalla_tiles \
+    --mjolnir-include-driveways False \
+    --mjolnir-include-bicycle False \
+    --mjolnir-include-pedestrian False \
     --mjolnir-tile-extract ${PWD}/valhalla_tiles.tar \
     --mjolnir-timezone ${PWD}/valhalla_tiles/timezones.sqlite \
     --mjolnir-admin ${PWD}/valhalla_tiles/admins.sqlite > "$CVTS_VALHALLA_CONFIG_FILE"
