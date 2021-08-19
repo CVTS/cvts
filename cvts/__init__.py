@@ -9,3 +9,4 @@ from ._utils import (
     rawfiles2jsonfile,
     json2geojson,
     jsonfile2geojsonfile)
+from ._data_retrieval import vehicle_trace

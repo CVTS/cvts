@@ -116,6 +116,8 @@ SPEED_PATH      = os.path.join(OUT_PATH, 'speed')
 #: Path to Valhalla configuration file.
 VALHALLA_CONFIG_FILE = os.path.join(CONFIG_PATH, 'valhalla.json')
 
+DATA_LAKE = '/mnt/data_lake/'
+
 if not _building:
     for p in (ANON_RAW_PATH, CONFIG_PATH, OUT_PATH, SEQ_PATH, STOP_PATH, SRC_DEST_PATH, SPEED_PATH):
         if not os.path.exists(p):
