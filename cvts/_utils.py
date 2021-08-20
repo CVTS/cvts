@@ -1,15 +1,23 @@
+import os
 import csv
 import json
 from math import sqrt, radians, cos
 from typing import Dict, Any, Generator, Union, Iterable
-from functools import reduce as reduce
+from functools import reduce
+from datetime import date
+from collections import defaultdict
 from ._polyline import decode
 from ._base_locator import locate_base
+from ._data_retrieval import vehicle_trace as _load_gzips
 from .settings import (
     MIN_STOP_TIME,
     MIN_MOVING_SPEED,
     MIN_MOVE_DISTANCE,
-    EARTH_RADIUS)
+    EARTH_RADIUS,
+    RAW_PATH,
+    RAW_DATA_FORMAT,
+    RAW_DATA_FILE_EXTENSIONS,
+    RawDataFormat)
 
 
 
@@ -163,13 +171,30 @@ def mongodoc2jsonchunks(
 
 
 
+def gather_input_descriptors():
+    input_files = defaultdict(list) if RAW_DATA_FORMAT == RawDataFormat.CSV \
+        else set()
+    for root, dirs, files in os.walk(RAW_PATH):
+        for f in files:
+            rego, ext = os.path.splitext(f)
+            if ext in RAW_DATA_FILE_EXTENSIONS:
+                if RAW_DATA_FORMAT == RawDataFormat.CSV:
+                    input_files[rego].append(os.path.join(root, f))
+                else:
+                    input_files.add(rego)
+
+    return input_files
+
+
+
 def rawfiles2jsonchunks(
-        csv_file: Union[str, Iterable[str]],
-        split_trips: bool) -> Generator[Dict[str, Any], None, None]:
+        input_descriptor: Union[str, Iterable[str]],
+        split_trips: bool,
+        dates: Iterable[date]) -> Generator[Dict[str, Any], None, None]:
     """Create a generator over all the data for a single vehicle from data in a
     csv or iterable of csvs.
 
-    :param csv_file: Either the name of a
+    :param input_descriptor: Either the name of a
         :ref:`GPS data<gps-data>` file or an iterable of names of such files.
 
     :param split_trips: if `True`, then split into :term:`trips<trip>`,
@@ -188,10 +213,25 @@ def rawfiles2jsonchunks(
                 'type':    'via'
             }
     """
+    if RAW_DATA_FORMAT == RawDataFormat.CSV:
+        if isinstance(input_descriptor, str):
+            raw_locs = _loadcsv(input_descriptor)
 
-    raw_locs = _loadcsv(csv_file) \
-        if isinstance(csv_file, str) \
-        else reduce(lambda a, b: a + _loadcsv(b), csv_file, [])
+        elif dates is None:
+            raw_locs = reduce(lambda a, b: a + _loadcsv(b), input_descriptor, [])
+
+        else:
+            date_strs = [d.strftime('%Y%m%d') for d in dates]
+            fls = [f for f in input_descriptor if \
+                os.path.split(os.path.dirname(input_descriptor))[-1] in date_strs]
+            raw_locs = reduce(lambda a, b: a + _loadcsv(b), fls, [])
+
+    elif RAW_DATA_FORMAT == RawDataFormat.GZIP:
+        if not isinstance(input_descriptor, str):
+            raise Exception('rawfiles2jsonchunks can only accept str ' \
+                'for argument input_descriptor when loading from gzip')
+
+        raw_locs = _load_gzips(input_descriptor, dates)
 
     base = locate_base(
         [ll['lon'] for ll in raw_locs],
@@ -214,7 +254,7 @@ def rawfiles2jsonfile(
     :param out_file: The path of the file to write the trip to.
     """
 
-    _, chunks = rawfiles2jsonchunks(csv_file, False)
+    _, chunks = rawfiles2jsonchunks(csv_file, False, None)
     with open(out_file, 'w') as jf:
         json.dump(next(chunks)[1], jf, indent=4)
 

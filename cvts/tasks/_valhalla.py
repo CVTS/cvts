@@ -4,7 +4,6 @@ import pickle
 import tempfile
 import logging
 from glob import glob
-from collections import defaultdict
 from multiprocessing import Pool
 from hashlib import sha256 as _hasher
 from functools import reduce
@@ -18,18 +17,19 @@ from .. import (
     distance,
     rawfiles2jsonchunks,
     json2geojson,
-    mongodoc2jsonchunks)
+    gather_input_descriptors,
+    mongodoc2jsonchunks,
+    NoRawDataException)
 from ..settings import (
     DEBUG,
     DEBUG_DOC_LIMIT,
-    RAW_PATH,
     OUT_PATH,
     SEQ_PATH,
-    MONGO_CONNECTION_STRING,
     POSTGRES_CONNECTION_STRING,
     RAW_FROM_MONGO,
     VALHALLA_CONFIG_FILE,
-    MIN_DISTANCE_BETWEEN_STOPS)
+    RawDataFormat,
+    RAW_DATA_FORMAT)
 from ..models import Vehicle, Base, Stop, Trip, Traversal
 from .._base_locator import EmptyCellsException
 
@@ -326,18 +326,12 @@ def _process_trips(rego, trips, seq_file_name, vehicle, base):
 
 
 
-def _process_files(fns):
-    fn          = fns[0]
+def _process_files(dates, fns):
+    rego        = fns[0]
     input_files = fns[1]
 
-    if isinstance(input_files, str):
-        if input_files == MONGO_VALUE:
-            rego = mangle_rego(fn)
-        else:
-            assert(fn.endswith('.csv'))
-            rego = os.path.splitext(fn)[0]
-    else:
-        rego = os.path.splitext(fn)[0]
+    if isinstance(input_files, str) and input_files == MONGO_VALUE:
+        rego = mangle_rego(fn)
 
     seq_file_name = os.path.join(SEQ_PATH, '{}.json'.format(rego))
 
@@ -350,9 +344,9 @@ def _process_files(fns):
     try:
         if isinstance(input_files, str) and input_files == MONGO_VALUE:
             doc = docs_for_vehicle(fn)
-            base, trips = mongodoc2jsonchunks(doc, True)
+            base, trips = mongodoc2jsonchunks(doc, True, dates)
         else:
-            base, trips = rawfiles2jsonchunks(input_files, True)
+            base, trips = rawfiles2jsonchunks(input_files, True, dates)
 
         vehicle = Vehicle(rego = rego)
         base = Base(vehicle = vehicle, lon=base[0], lat=base[1])
@@ -363,6 +357,16 @@ def _process_files(fns):
         logger.warning('failed to locate base ({}) for: {}'.format(
             str(e), rego))
 
+    except NoRawDataException as e:
+        logger.warning('no data for: {}'.format(
+            str(e), rego))
+
+
+
+
+# workaround for multiprocessing pickling limitations
+def lproc(arg):
+    return _process_files(arg[0], arg[1])
 
 
 #-------------------------------------------------------------------------------
@@ -380,10 +384,7 @@ class ListRawFiles(luigi.Task):
             input_files = {v: MONGO_VALUE for v in vehicle_ids(limit)}
 
         else:
-            input_files = defaultdict(list)
-            for root, dirs, files in os.walk(RAW_PATH):
-                for f in files:
-                    input_files[f].append(os.path.join(root, f))
+            input_files = gather_input_descriptors()
 
         with open(self.output().fn, 'wb') as pf:
             pickle.dump(input_files, pf)
@@ -398,6 +399,7 @@ class MatchToNetwork(luigi.Task):
     """Match trips to the network."""
 
     pickle_file_name = os.path.join(OUT_PATH, 'seq_files.pkl')
+    dates            = luigi.Parameter(default = None)
 
     def requires(self):
         """:meta private:"""
@@ -414,11 +416,32 @@ class MatchToNetwork(luigi.Task):
         with open(self.input().fn, 'rb') as input_files_file:
             input_files = pickle.load(input_files_file)
 
-        # do the jobby
-        with Pool(initializer = _init_db_connections) as workers:
-            work = workers.imap_unordered(_process_files, input_files.items())
+        if DEBUG:
+            if RAW_FROM_MONGO:
+                raise Exception('Cannot run debug from Mongo')
+            _init_db_connections()
+
+
+            if RAW_DATA_FORMAT == RawDataFormat.GZIP:
+                input_files_subset = ((self.dates, (v,v)) for i, v in \
+                    enumerate(input_files) if i < DEBUG_DOC_LIMIT)
+            else:
+                input_files_subset = ((self.dates, v) for i, v in \
+                    enumerate(input_files.items()) if i < DEBUG_DOC_LIMIT)
+
+            work = map(lproc, input_files_subset)
             # wrap in list so we wait for jobby to finish.
-            list(tqdm(work, total=len(input_files)))
+            list(tqdm(work, total=DEBUG_DOC_LIMIT))
+        else:
+            if RAW_DATA_FORMAT == RawDataFormat.GZIP:
+                input_files_gen = ((self.dates, (v,v)) for v in input_files.items())
+            else:
+                input_files_gen = ((self.dates, v) for v in input_files.items())
+
+            with Pool(initializer = _init_db_connections) as workers:
+                work = workers.imap_unordered(lproc, input_files_gen)
+                # wrap in list so we wait for jobby to finish.
+                list(tqdm(work, total=len(input_files)))
 
         # list the (seq) output files
         seq_output_files = glob(os.path.join(SEQ_PATH, '*'))
