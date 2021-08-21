@@ -9,7 +9,7 @@ class RawDataFormat(Enum):
     GZIP  = 3
 
 def _bool_from_env(ev):
-    return os.environ.get(ev, 'False') not in ('0', 'False')
+    return os.environ.get(ev, 'False') not in ('0', 'False', 'false')
 
 #: Are we debugging. Can be set via the environment variable *CVTS_DEBUG*.
 DEBUG = _bool_from_env('CVTS_DEBUG')
@@ -67,7 +67,7 @@ _raw_dir_must_exist = RAW_DATA_FORMAT in \
 MONGO_COLLECTION_NAMES = None
 
 #! The number of documents to process if in DEBUG mode.
-DEBUG_DOC_LIMIT   = 10000
+DEBUG_DOC_LIMIT   = 10
 
 #: The minimum time a vehicle must not move for to be considered 'stopped' in
 #: seconds.
@@ -140,7 +140,7 @@ SPEED_PATH      = os.path.join(OUT_PATH, 'speed')
 VALHALLA_CONFIG_FILE = os.path.join(CONFIG_PATH, 'valhalla.json')
 
 if not _building:
-    for p in (ANON_RAW_PATH, CONFIG_PATH, OUT_PATH, SEQ_PATH, STOP_PATH, SRC_DEST_PATH, SPEED_PATH):
+    for p in (CONFIG_PATH, OUT_PATH, SEQ_PATH, STOP_PATH, SRC_DEST_PATH, SPEED_PATH):
         if not os.path.exists(p):
             os.makedirs(p)
 

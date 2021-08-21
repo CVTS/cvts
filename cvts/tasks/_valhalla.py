@@ -152,7 +152,7 @@ def _average_speed(rego, results):
 
     #TODO: Do we want to check 'valhalla_speed' also/instead
     speed = df[df.speed > 6].groupby(
-        ['edge_index']).apply(ave_speed).reset_index()
+        ['edge_index']).apply(ave_speed).reset_index(drop=True)
 
     # missing edges and estimated times
     def edge_times(i1, i2, t1, t2):
@@ -206,12 +206,13 @@ def _process_trips(rego, trips, seq_file_name, vehicle, base):
 
             # convert the output from Valhalla into our outputs (seq files).
             edges = snapped['edges']
-            trip_data['geojson']        = json2geojson(snapped, True)
-            trip_data['edge_to_osmids'] = [[e['id'], e['osmids']] for e in edges]
-            trip_data['way_ids']        = [e['way_id'] for e in edges]
-            trip_data['status']         = 'success'
+            trip_data['geojson']  = json2geojson(snapped, True)
+            trip_data['edge_ids'] = [e['id'] for e in edges]
+            trip_data['way_ids']  = [e['way_id'] for e in edges]
+            trip_data['status']   = 'success'
 
-            match_props = ((p.get('edge_index'), p['type']) for p in snapped['matched_points'])
+            match_props = ((p.get('edge_index'), p['type']) for p \
+                in snapped['matched_points'])
 
             return trip_data, [_getpointattrs(p) + \
                 ('success', trip_index) + \
@@ -220,11 +221,11 @@ def _process_trips(rego, trips, seq_file_name, vehicle, base):
 
         except Exception as e:
             e_str = '{}: {}'.format(e.__class__.__name__, str(e))
-            trip_data['geojson']        = {}
-            trip_data['edge_to_osmids'] = []
-            trip_data['way_ids']        = []
-            trip_data['status']         = 'failure'
-            trip_data['message']        = e_str
+            trip_data['geojson']  = {}
+            trip_data['edge_ids'] = []
+            trip_data['way_ids']  = []
+            trip_data['status']   = 'failure'
+            trip_data['message']  = e_str
             return trip_data, [_getpointattrs(p) + \
                 ('failure', trip_index) + \
                 NAS + \
@@ -291,7 +292,7 @@ def _process_trips(rego, trips, seq_file_name, vehicle, base):
             n_stationary = [r[1]    for r in results]
             trip_data    = [r[0][0] for r in results]
             mm           = [r[0][1] for r in results]
-            edge_ids     = [[e[0]   for e in td['edge_to_osmids']] for td in trip_data]
+            edge_ids     = [td['edge_ids'] for td in trip_data]
 
             # stops
             s0 = Stop(

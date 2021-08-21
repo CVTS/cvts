@@ -21,7 +21,7 @@ setup-postgre:
 	# --------------BE CAREFUL: THIS DESTROYS THE EXISTING DB--------------
 	# ---------------------------------------------------------------------
 	echo "DROP DATABASE IF EXISTS ${CVTS_POSTGRES_DB};" > /tmp/cvts.sql
-	echo "DROP USER IF EXISTS ${CVTS_POSTGRES_DB};" >> /tmp/cvts.sql
+	echo "DROP USER IF EXISTS ${CVTS_POSTGRES_USER};" >> /tmp/cvts.sql
 	echo "CREATE DATABASE ${CVTS_POSTGRES_DB};" >> /tmp/cvts.sql
 	echo "CREATE USER ${CVTS_POSTGRES_USER} WITH ENCRYPTED PASSWORD '${CVTS_POSTGRES_PASS}';" >> /tmp/cvts.sql
 	echo "GRANT ALL PRIVILEGES ON DATABASE ${CVTS_POSTGRES_DB} TO ${CVTS_POSTGRES_USER};" >> /tmp/cvts.sql
