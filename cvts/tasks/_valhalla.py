@@ -443,7 +443,7 @@ class MatchToNetwork(luigi.Task):
             list(tqdm(work, total=DEBUG_DOC_LIMIT))
         else:
             if RAW_DATA_FORMAT == RawDataFormat.GZIP:
-                input_files_gen = ((self.dates, (v,v)) for v in input_files.items())
+                input_files_gen = ((self.dates, (v,v)) for v in input_files)
             else:
                 input_files_gen = ((self.dates, v) for v in input_files.items())
 
