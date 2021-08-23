@@ -223,7 +223,7 @@ def rawfiles2jsonchunks(
         else:
             date_strs = [d.strftime('%Y%m%d') for d in dates]
             fls = [f for f in input_descriptor if \
-                os.path.split(os.path.dirname(input_descriptor))[-1] in date_strs]
+                os.path.split(os.path.dirname(f))[-1] in date_strs]
             raw_locs = reduce(lambda a, b: a + _loadcsv(b), fls, [])
 
     elif RAW_DATA_FORMAT == RawDataFormat.GZIP:
