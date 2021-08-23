@@ -10,7 +10,7 @@ from functools import reduce
 import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 from tqdm import tqdm
 import luigi
 from .. import (
@@ -112,23 +112,25 @@ def _run_valhalla(rego, trip, trip_index):
 
 
 _engine = create_engine(POSTGRES_CONNECTION_STRING)
-_session_maker = None
 def _init_db_connections():
     # see: https://docs.sqlalchemy.org/en/13/core/pooling.html#pooling-multiprocessing
     global _engine, _session_maker
     _engine.dispose()
-    _session_maker = sessionmaker(bind=_engine)
     _init_mongo_db_connection()
 
 def write_to_db(vehicle, base, stops, trips, travs):
-    global _session_maker
-    session = _session_maker()
-    session.add(vehicle)
-    session.add(base)
-    for stop in stops: session.add(stop)
-    for trip in trips: session.add(trip)
-    for trav in travs: session.add(trav)
-    session.commit()
+    with Session(_engine) as session, session.begin():
+        session.add(vehicle)
+        session.add(base)
+        for stop in stops: session.add(stop)
+        for trip in trips: session.add(trip)
+        for trav in travs: session.add(trav)
+
+
+
+def _get_vehicle(rego):
+    with Session(_engine, expire_on_commit=False) as session, session.begin():
+        return session.query(Vehicle).filter_by(rego=rego).one()
 
 
 
@@ -349,7 +351,13 @@ def _process_files(dates, fns):
         else:
             base, trips = rawfiles2jsonchunks(input_files, True, dates)
 
-        vehicle = Vehicle(rego = rego)
+
+        if RAW_DATA_FORMAT == RawDataFormat.GZIP:
+            # in the case, the db was populated previously
+            vehicle = _get_vehicle(rego = rego)
+        else:
+            vehicle = Vehicle(rego = rego)
+
         base = Base(vehicle = vehicle, lon=base[0], lat=base[1])
 
         _process_trips(rego, trips, seq_file_name, vehicle, base)
