@@ -2,6 +2,7 @@
 
 from sqlalchemy import (
     Column,
+    Table,
     BigInteger,
     SmallInteger,
     Integer,
@@ -13,11 +14,24 @@ from sqlalchemy.ext.declarative import declarative_base
 
 DBase = declarative_base()
 
+vehicle_type_association_table = Table('vehicle_vehicle_type_assoc', DBase.metadata,
+    Column('vehicle_id', Integer, ForeignKey('vehicles.id')),
+    Column('vehicle_type_id', Integer, ForeignKey('vehicle_types.id'))
+)
+
 class Vehicle(DBase):
     """Data on a vehicle."""
     __tablename__ = 'vehicles'
     id            = Column(Integer, primary_key=True)
-    rego          = Column(String)
+    vehicle_types = relationship("VehicleType", secondary=vehicle_type_association_table)
+    rego          = Column(String, unique=True)
+
+class VehicleType(DBase):
+    """A list of vehicle types."""
+    __tablename__ = 'vehicle_types'
+    id            = Column(Integer, primary_key=True)
+    type_en       = Column(String, unique=True)
+    type_vn       = Column(String, unique=True)
 
 class Base(DBase):
     """The location a vehicle is garraged."""
