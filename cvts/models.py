@@ -78,5 +78,9 @@ class Traversal(DBase):
     trip          = relationship('Trip', backref='traversals')
     edge          = Column(BigInteger) # will be unsigned 64 bit int
     timestamp     = Column(Integer)
+    hour          = Column(SmallInteger)
+    DOW           = Column(SmallInteger)
+    DOY           = Column(SmallInteger)
+    WOY           = Column(SmallInteger)
     speed         = Column(Float)
     count         = Column(Float)

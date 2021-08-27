@@ -7,6 +7,7 @@ from glob import glob
 from multiprocessing import Pool
 from hashlib import sha256 as _hasher
 from functools import reduce
+from datetime import datetime
 import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
@@ -267,26 +268,44 @@ def _process_trips(rego, trips, seq_file_name, vehicle, base):
                     end     = stop2)
 
             def gen_traversals(result, trip, edge_ids):
+                def times(ts):
+                    d  = datetime.fromtimestamp(int(ts))
+                    _, week, day = d.isocalendar()
+                    week -= 1
+                    day  -= 1
+                    DOY = 7 * week + day
+                    return ts, d.hour, day, 7*week + day, week
+
                 missing_inds_and_ts, speeds =  _average_speed(rego, result)
                 if speeds is not None:
                     for index, line in speeds.iterrows():
+                        ts, hour, DOW, DOY, WOY = times(line['timestamp'])
                         yield Traversal(
-                            vehicle = vehicle,
-                            trip    = trip,
-                            edge    = line['edge_id'],
-                            timestamp = line['timestamp'],
-                            speed   = line['speed'],
-                            count   = line['weight'])
+                            vehicle   = vehicle,
+                            trip      = trip,
+                            edge      = line['edge_id'],
+                            timestamp = ts,
+                            hour      = hour,
+                            DOW       = DOW,
+                            DOY       = DOY,
+                            WOY       = WOY,
+                            speed     = line['speed'],
+                            count     = line['weight'])
 
                 if missing_inds_and_ts is not None:
                     for index, time in missing_inds_and_ts:
+                        ts, hour, DOW, DOY, WOY = times(time)
                         yield Traversal(
-                            vehicle = vehicle,
-                            trip    = trip,
-                            edge    = edge_ids[index],
-                            timestamp = time,
-                            speed   = None,
-                            count   = 1)
+                            vehicle   = vehicle,
+                            trip      = trip,
+                            edge      = edge_ids[index],
+                            timestamp = ts,
+                            hour      = hour,
+                            DOW       = DOW,
+                            DOY       = DOY,
+                            WOY       = WOY,
+                            speed     = None,
+                            count     = 1)
 
             results = [(run_trip(trip, ti), n_stationary) for \
                     ti, (n_stationary, trip) in enumerate(trips)]
