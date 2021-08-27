@@ -71,11 +71,11 @@ DEBUG_DOC_LIMIT   = 10
 
 #: The minimum time a vehicle must not move for to be considered 'stopped' in
 #: seconds.
-MIN_STOP_TIME     = 20 * 60
+MIN_STOP_TIME     = 8 * 60
 
 #: The minimum speed a vehicle can be moving to be considered 'moving' in
 #: kilometers per hour.
-MIN_MOVING_SPEED  = 6
+MIN_MOVING_SPEED  = 4
 
 #: The minimum distance a vehicle can move between two (potentially non-adjacent)
 #: GPS points to not be considered 'moving' in meters.
