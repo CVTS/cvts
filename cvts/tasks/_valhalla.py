@@ -459,7 +459,7 @@ class MatchToNetwork(luigi.Task):
 
             work = map(lproc, input_files_subset)
             # wrap in list so we wait for jobby to finish.
-            list(tqdm(work, total=DEBUG_DOC_LIMIT))
+            list(tqdm(work, total=DEBUG_DOC_LIMIT, smoothing=1))
         else:
             if RAW_DATA_FORMAT == RawDataFormat.GZIP:
                 input_files_gen = ((self.dates, (v,v)) for v in input_files)
@@ -469,7 +469,7 @@ class MatchToNetwork(luigi.Task):
             with Pool(initializer = _init_db_connections) as workers:
                 work = workers.imap_unordered(lproc, input_files_gen)
                 # wrap in list so we wait for jobby to finish.
-                list(tqdm(work, total=len(input_files)))
+                list(tqdm(work, total=len(input_files), smoothing=1))
 
         # list the (seq) output files
         seq_output_files = glob(os.path.join(SEQ_PATH, '*'))
