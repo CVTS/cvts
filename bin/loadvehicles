@@ -11,9 +11,13 @@ from cvts.models import Vehicle, VehicleType
 UNCLASSIFIED_STRING = 'Xe chưa phân loại'
 engine = create_engine(POSTGRES_CONNECTION_STRING)
 
+def make_type(dct):
+    dct['code'] = int(dct['code'])
+    return VehicleType(**dct)
+
 with open(os.path.join(CONFIG_PATH, 'vehicle-types.csv'), 'r') as vt:
     reader = csv.DictReader(vt)
-    vehicle_types = {r['type_vn']: VehicleType(**r) for r in reader}
+    vehicle_types = {r['type_vn']: make_type(r) for r in reader}
     
 vehicles = {}
 with open(os.path.join(CONFIG_PATH, 'vehicle-to-vehicle-type.csv'), 'r') as vtvt:
