@@ -26,8 +26,10 @@ class VehicleType(DBase):
     """A list of vehicle types."""
     __tablename__ = 'vehicle_types'
     id            = Column(Integer, primary_key=True)
-    type_en       = Column(String, unique=True)
+    code          = Column(SmallInteger, unique=True)
     type_vn       = Column(String, unique=True)
+    type_en       = Column(String, unique=True)
+    group         = Column(String)
 
 class Base(DBase):
     """The location a vehicle is garraged."""
