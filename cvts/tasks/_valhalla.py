@@ -273,37 +273,36 @@ def _process_trips(rego, trips, seq_file_name, vehicle, base):
                     _, week, day = d.isocalendar()
                     week -= 1
                     day  -= 1
-                    DOY = 7 * week + day
                     return ts, d.hour, day, 7*week + day, week
 
                 missing_inds_and_ts, speeds =  _average_speed(rego, result)
                 if speeds is not None:
                     for index, line in speeds.iterrows():
-                        ts, hour, DOW, DOY, WOY = times(line['timestamp'])
+                        ts, hour, dow, doy, woy = times(line['timestamp'])
                         yield Traversal(
                             vehicle   = vehicle,
                             trip      = trip,
                             edge      = line['edge_id'],
                             timestamp = ts,
                             hour      = hour,
-                            DOW       = DOW,
-                            DOY       = DOY,
-                            WOY       = WOY,
+                            dow       = dow,
+                            doy       = doy,
+                            woy       = woy,
                             speed     = line['speed'],
                             count     = line['weight'])
 
                 if missing_inds_and_ts is not None:
                     for index, time in missing_inds_and_ts:
-                        ts, hour, DOW, DOY, WOY = times(time)
+                        ts, hour, dow, doy, woy = times(time)
                         yield Traversal(
                             vehicle   = vehicle,
                             trip      = trip,
                             edge      = edge_ids[index],
                             timestamp = ts,
                             hour      = hour,
-                            DOW       = DOW,
-                            DOY       = DOY,
-                            WOY       = WOY,
+                            dow       = dow,
+                            doy       = doy,
+                            woy       = woy,
                             speed     = None,
                             count     = 1)
 

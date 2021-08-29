@@ -79,8 +79,8 @@ class Traversal(DBase):
     edge          = Column(BigInteger) # will be unsigned 64 bit int
     timestamp     = Column(Integer)
     hour          = Column(SmallInteger)
-    DOW           = Column(SmallInteger)
-    DOY           = Column(SmallInteger)
-    WOY           = Column(SmallInteger)
+    dow           = Column(SmallInteger)
+    doy           = Column(SmallInteger)
+    woy           = Column(SmallInteger)
     speed         = Column(Float)
     count         = Column(Float)
