@@ -8,14 +8,12 @@ from sqlalchemy import create_engine
 
 class NoRawDataException(Exception): pass
 
-datalake_connection_string = "postgresql://cvts:csiro_and_world_bank@10.100.0.50:5432/datalake"
-
 def list_of_vehicles() -> pd.DataFrame:
     """Queries the infrastructure for a table with all vehicles for which we have data to analyze
 
     :return: A Pandas DataFrame with all vehicles we have in the database
     """
-    engine = create_engine(datalake_connection_string)
+    engine = create_engine(DATALAKE_CONNECTION_STRING)
     conn = engine.connect()
 
     sql = 'select * from vehicles veh join vehicle_types vt on (veh.vehicle_type_id=vt.id)'
