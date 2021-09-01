@@ -8,7 +8,6 @@ from datetime import date
 from collections import defaultdict
 from ._polyline import decode
 from ._base_locator import locate_base
-from ._data_retrieval import vehicle_trace as _load_gzips
 from .settings import (
     MIN_STOP_TIME,
     MIN_MOVING_SPEED,
@@ -18,6 +17,23 @@ from .settings import (
     RAW_DATA_FORMAT,
     RAW_DATA_FILE_EXTENSIONS,
     RawDataFormat)
+
+if RAW_DATA_FORMAT == RawDataFormat.GZIP:
+    from ._data_retrieval import (
+        vehicle_trace as _do_load_gzips,
+        NoRawDataException)
+
+    def _load_gzips(*args, **kwargs):
+        try:
+            return _do_load_gzips(*args, **kwargs)
+        except NoRawDataException:
+            raise
+        except Exception as e:
+            raise DataLakeError(e)
+
+
+
+class DataLakeError(Exception): pass
 
 
 
@@ -227,11 +243,12 @@ def rawfiles2jsonchunks(
             raw_locs = reduce(lambda a, b: a + _loadcsv(b), fls, [])
 
     elif RAW_DATA_FORMAT == RawDataFormat.GZIP:
-        if not isinstance(input_descriptor, str):
-            raise Exception('rawfiles2jsonchunks can only accept str ' \
-                'for argument input_descriptor when loading from gzip')
+        if not (isinstance(input_descriptor, str) or isinstance(input_descriptor, int)):
+            raise Exception('rawfiles2jsonchunks can only accept or int ' \
+                'for argument input_descriptor when loading from gzip, ' \
+                'got: {}'.format(type(input_descriptor).__name__))
 
-        raw_locs = _load_gzips(input_descriptor, dates)
+        raw_locs = _load_gzips(str(input_descriptor), dates)
 
     base = locate_base(
         [ll['lon'] for ll in raw_locs],

@@ -17,7 +17,6 @@ from .. import (
     distance,
     rawfiles2jsonchunks,
     json2geojson,
-    gather_input_descriptors,
     mongodoc2jsonchunks,
     NoRawDataException)
 from ..settings import (
@@ -41,6 +40,7 @@ if RAW_FROM_MONGO:
         _init_db_connection as _init_mongo_db_connection)
 else:
     def _init_mongo_db_connection(): pass
+    from .. import vehicle_ids
 
 
 
@@ -88,8 +88,8 @@ def _getedgeattrs(edge):
 
 
 def _run_valhalla(rego, trip, trip_index):
-    tmp_file_in  = os.path.join(TMP_DIR, str(trip_index) + '_in_'  + rego)
-    tmp_file_out = os.path.join(TMP_DIR, str(trip_index) + '_out_' + rego)
+    tmp_file_in  = os.path.join(TMP_DIR, '{}_in_{}'.format(trip_index, rego))
+    tmp_file_out = os.path.join(TMP_DIR, '{}_out_{}'.format(trip_index, rego))
 
     try:
         with open(tmp_file_in, 'w') as jf:
@@ -128,9 +128,9 @@ def write_to_db(vehicle, base, stops, trips, travs):
 
 
 
-def _get_vehicle(rego):
+def _get_vehicle(vehicle_etl_id):
     with Session(_engine, expire_on_commit=False) as session, session.begin():
-        return session.query(Vehicle).filter_by(rego=rego).one()
+        return session.query(Vehicle).filter_by(etl_id=vehicle_etl_id).one()
 
 
 
@@ -354,7 +354,7 @@ def _process_files(dates, fns):
 
         if RAW_DATA_FORMAT == RawDataFormat.GZIP:
             # in the case, the db was populated previously
-            vehicle = _get_vehicle(rego = rego)
+            vehicle = _get_vehicle(vehicle_etl_id = rego)
         else:
             vehicle = Vehicle(rego = rego)
 
@@ -393,7 +393,7 @@ class ListRawFiles(luigi.Task):
             input_files = {v: MONGO_VALUE for v in vehicle_ids(limit)}
 
         else:
-            input_files = gather_input_descriptors()
+            input_files = vehicle_ids()
 
         with open(self.output().fn, 'wb') as pf:
             pickle.dump(input_files, pf)

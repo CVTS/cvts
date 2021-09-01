@@ -3,9 +3,10 @@ from os.path import join, isfile, isdir
 from datetime import date
 from typing import Iterable
 import pandas as pd
-from .settings import RAW_PATH, DATALAKE_CONNECTION_STRING
 from sqlalchemy import create_engine
 
+DATALAKE_CONNECTION_STRING = os.environ['DATALAKE_CONNECTION_STRING']
+RAW_PATH = os.environ['DATALAKE_RAW_PATH']
 
 class NoRawDataException(Exception): pass
 
@@ -50,7 +51,7 @@ def vehicle_trace(vehicle_id: str, dates: Iterable[date]) -> dict:
         fldr_month = join(RAW_PATH, str(date.month).zfill(2))
         if not isdir(fldr_month):
             continue
-        filename = join(fldr_month, '{}.zip'.format(vehicle_id))
+        filename = join(fldr_month, 'vehicle_{}.zip'.format(vehicle_id))
         if not isfile(filename):
             continue
         if fldr_month not in data_month:

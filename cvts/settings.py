@@ -31,13 +31,13 @@ if _building:
 
 #: The connections string for MongoDB. If present, raw data is read from this
 #: DB. Read from the environment variable *CVTS_MONGO_CONNECTION_STRING*.
-MONGO_CONNECTION_STRING = os.environ.get('CVTS_MONGO_CONNECTION_STRING', None)
+MONGO_CONNECTION_STRING = None
 
 #: The connections string for PostGRE. Read from the environment variable
 #: *CVTS_POSTGRES_CONNECTION_STRING*.
 POSTGRES_CONNECTION_STRING = os.environ.get('CVTS_POSTGRES_CONNECTION_STRING', None)
 
-_raw_format = os.environ.get('CVTS_RAW_DATA_FORMAT', 'CSV').upper()
+_raw_format = os.environ.get('CVTS_RAW_DATA_FORMAT', 'GZIP').upper()
 
 #: The format the raw data is stored in.
 RAW_DATA_FORMAT = RawDataFormat.MONGO if _raw_format == 'MONGO' else \
@@ -49,8 +49,6 @@ if RAW_DATA_FORMAT == RawDataFormat.MONGO \
     raise Exception(
         'raw data specified to be MONGO but ' \
         'CVTS_MONGO_CONNECTION_STRING not specified.')
-
-DATALAKE_CONNECTION_STRING = os.environ['DATALAKE_CONNECTION_STRING']
 
 #: Are we reading raw data from MongoDB. ``True`` if the environment variable
 #: *MONGO_CONNECTION_STRING* is set.
@@ -91,6 +89,9 @@ MIN_DISTANCE_BETWEEN_STOPS = 50
 EARTH_RADIUS      = 6371000
 
 def _get_path(var, must_exist=False):
+    if var == 'raw' and RAW_DATA_FORMAT == RawDataFormat.GZIP:
+        return os.environ.get('DATALAKE_RAW_PATH', '')
+
     path = os.environ.get(
         'CVTS_{}_PATH'.format(var.upper()),
         os.path.join(WORK_PATH, var))

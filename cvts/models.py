@@ -20,6 +20,7 @@ class Vehicle(DBase):
     vehicle_type_id = Column(Integer, ForeignKey('vehicle_types.id'))
     vehicle_type  = relationship("VehicleType")
     rego          = Column(String, unique=True)
+    etl_id        = Column(Integer, unique=True)
 
 class VehicleType(DBase):
     """A list of vehicle types."""
