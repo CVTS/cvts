@@ -5,9 +5,11 @@ from typing import Iterable
 import pandas as pd
 from .settings import RAW_PATH
 
+
 class NoRawDataException(Exception): pass
 
-def vehicle_trace(vehicle_id: str, dates: Iterable[date])->dict:
+
+def vehicle_trace(vehicle_id: str, dates: Iterable[date]) -> dict:
     """Creates a list of GPS records for a given vehicle for the specified
     *dates*..
 
@@ -30,21 +32,23 @@ def vehicle_trace(vehicle_id: str, dates: Iterable[date])->dict:
             }
     """
     data = []
+    data_month = {}
     for date in dates:
-        fldr = join(
-            RAW_PATH,
-            str(date.month).zfill(2),
-            date.strftime("%Y%m%d"))
-        if not isdir(fldr):
+        fldr_month = join(RAW_PATH, str(date.month).zfill(2))
+        if not isdir(fldr_month):
             continue
-        filename = join(fldr, '{}.gzip'.format(vehicle_id))
+        filename = join(fldr_month, '{}.zip'.format(vehicle_id))
         if not isfile(filename):
             continue
-        data.append(pd.read_csv(filename))
+        if fldr_month not in data_month:
+            data_month[fldr_month] = pd.read_csv(filename)
+
+        df = data_month[fldr_month]
+        data.append(df[pd.to_datetime(df.datetime, unit='s').dt.date == date])
     try:
         df = pd.concat(data)
     except ValueError as e:
         raise NoRawDataException(vehicle_id)
-    df.columns=['time', 'speed', 'lon', 'lat', 'heading']
-    df = df.assign(type='via', heading_tolerance= 45)
+    df.columns = ['time', 'speed', 'lon', 'lat', 'heading']
+    df = df.assign(type='via', heading_tolerance=45)
     return df.to_dict('records')
