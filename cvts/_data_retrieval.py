@@ -3,10 +3,12 @@ from os.path import join, isfile, isdir
 from datetime import date
 from typing import Iterable
 import pandas as pd
-from .settings import RAW_PATH
+from .settings import RAW_PATH, DATALAKE_CONNECTION_STRING
 from sqlalchemy import create_engine
 
+
 class NoRawDataException(Exception): pass
+
 
 def list_of_vehicles() -> pd.DataFrame:
     """Queries the infrastructure for a table with all vehicles for which we have data to analyze

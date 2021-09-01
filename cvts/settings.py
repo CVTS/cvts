@@ -50,6 +50,8 @@ if RAW_DATA_FORMAT == RawDataFormat.MONGO \
         'raw data specified to be MONGO but ' \
         'CVTS_MONGO_CONNECTION_STRING not specified.')
 
+DATALAKE_CONNECTION_STRING = os.environ['DATALAKE_CONNECTION_STRING']
+
 #: Are we reading raw data from MongoDB. ``True`` if the environment variable
 #: *MONGO_CONNECTION_STRING* is set.
 RAW_FROM_MONGO = RAW_DATA_FORMAT == RawDataFormat.MONGO
