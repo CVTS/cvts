@@ -1,0 +1,5 @@
+numpy 
+jupyterlab 
+matplotlib
+geopandas
+psycopg2-binary
