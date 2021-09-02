@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+
+import os
+import csv
+from pprint import pprint
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from cvts.settings import POSTGRES_CONNECTION_STRING, CONFIG_PATH
+from cvts import DataLakeError
+from cvts.models import Vehicle, VehicleType
+
+UNCLASSIFIED_STRING = 'Xe chưa phân loại'
+engine = create_engine(POSTGRES_CONNECTION_STRING)
+
+
+
+# get the data from Pedro DB if possible, otherwise use existing.
+if os.environ.get('DATALAKE_CONNECTION_STRING', False) \
+        and os.environ.get('DATALAKE_RAW_PATH', False):
+    from cvts._data_retrieval import list_of_vehicles
+
+    vehicles_file_name = '/tmp/vehicles.csv'
+
+    try:
+        vs_and_ids = list_of_vehicles()[['vehicle_id', 'vehicle_id_string', 'type_vn']]
+        vs_and_ids.columns = ['etl_id', 'rego', 'vehicle_type']
+    except Exception as e:
+        raise DataLakeError(e)
+
+    vs_and_ids.to_csv(vehicles_file_name, index=False)
+
+else:
+    vehicles_file_name = os.path.join(CONFIG_PATH, 'vehicle-to-vehicle-type.csv')
+
+
+
+# create vehicle types
+def make_type(dct):
+    dct['code'] = int(dct['code'])
+    return VehicleType(**dct)
+
+with open(os.path.join(CONFIG_PATH, 'vehicle-types.csv'), 'r') as vt:
+    reader = csv.DictReader(vt)
+    vehicle_types = {r['type_vn']: make_type(r) for r in reader}
+
+
+
+# create vehicles
+vehicles = {}
+with open(vehicles_file_name, 'r') as vtvt:
+    reader = csv.DictReader(vtvt)
+    for i, row in enumerate(reader):
+        try:
+            vt = row.get('vehicle_type', None).strip()
+            rego = row['rego'].strip()
+            etl_id = row['etl_id']
+            if rego in vehicles:
+                if vehicles[rego][0] == UNCLASSIFIED_STRING:
+                    vehicles[rego] = (vt, etl_id)
+                else:
+                    if vt != UNCLASSIFIED_STRING:
+                        raise Exception('duplicate vehicle types: "{}" and "{}"'.format(
+                            vt, vehicles[rego][0]))
+            else:
+                vehicles[rego] = (vt, etl_id)
+
+        except Exception as e:
+            # TODO: warning to log
+            print('error at {}: {}'.format(i, e))
+            print(row)
+            raise
+
+
+
+# dump everything to the CVTS DB.
+with Session(engine) as session, session.begin():
+    for v in vehicle_types.values():
+        session.add(v)
+
+    for i, (rego, (vt, etl_id)) in enumerate(vehicles.items()):
+        try:
+            if vt is None or vt == '':
+                vehicle = Vehicle(rego=rego, etl_id=etl_id)
+            else:
+                vehicle = Vehicle(
+                    vehicle_type = vehicle_types[vt],
+                    rego = rego,
+                    etl_id = etl_id)
+            session.add(vehicle)
+        except Exception as e:
+            # TODO: warning to log
+            print('error at {}: '.format(i, e))
+            raise
