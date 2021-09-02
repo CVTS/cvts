@@ -66,6 +66,9 @@ _raw_dir_must_exist = RAW_DATA_FORMAT in \
 #: The collections to limit ourselves to in the MongoDB.
 MONGO_COLLECTION_NAMES = None
 
+#: String used to denote stuff from the lake
+LAKE_FLAG = 'lake'
+
 #! The number of documents to process if in DEBUG mode.
 DEBUG_DOC_LIMIT   = 10
 

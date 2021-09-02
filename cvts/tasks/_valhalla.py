@@ -28,6 +28,7 @@ from ..settings import (
     POSTGRES_CONNECTION_STRING,
     RAW_FROM_MONGO,
     VALHALLA_CONFIG_FILE,
+    LAKE_FLAG,
     RawDataFormat,
     RAW_DATA_FORMAT)
 from ..models import Vehicle, Base, Stop, Trip, Traversal
@@ -348,23 +349,27 @@ def _process_trips(rego, trips, seq_file_name, vehicle, base):
 
 
 def _process_files(dates, fns):
-    rego        = fns[0]
+    rego_or_id  = fns[0]
     input_files = fns[1]
 
-    if isinstance(input_files, str) and input_files == MONGO_VALUE:
-        rego = mangle_rego(fn)
+    if isinstance(input_files, str):
+        if input_files == MONGO_VALUE:
+            true_id = rego_or_id
+            rego_or_id = mangle_rego(rego_or_id)
+        if input_files == LAKE_FLAG:
+            input_files = rego_or_id
 
-    seq_file_name = os.path.join(SEQ_PATH, '{}.json'.format(rego))
+    seq_file_name = os.path.join(SEQ_PATH, '{}.json'.format(rego_or_id))
 
     if os.path.exists(seq_file_name):
-        logger.debug('skipping: {} (done)'.format(rego))
+        logger.debug('skipping: {} (done)'.format(rego_or_id))
         return
 
     # Can't do this in the block above if we want to check that we must proceed
     # first.
     try:
         if isinstance(input_files, str) and input_files == MONGO_VALUE:
-            doc = docs_for_vehicle(fn)
+            doc = docs_for_vehicle(true_id)
             base, trips = mongodoc2jsonchunks(doc, True, dates)
         else:
             base, trips = rawfiles2jsonchunks(input_files, True, dates)
@@ -372,21 +377,21 @@ def _process_files(dates, fns):
 
         if RAW_DATA_FORMAT == RawDataFormat.GZIP:
             # in the case, the db was populated previously
-            vehicle = _get_vehicle(vehicle_etl_id = rego)
+            vehicle = _get_vehicle(vehicle_etl_id = rego_or_id)
         else:
-            vehicle = Vehicle(rego = rego)
+            vehicle = Vehicle(rego = rego_or_id)
 
         base = Base(vehicle = vehicle, lon=base[0], lat=base[1])
 
-        _process_trips(rego, trips, seq_file_name, vehicle, base)
+        _process_trips(rego_or_id, trips, seq_file_name, vehicle, base)
 
     except EmptyCellsException as e:
         logger.warning('failed to locate base ({}) for: {}'.format(
-            str(e), rego))
+            str(e), rego_or_id))
 
     except NoRawDataException as e:
         logger.warning('no data for: {}'.format(
-            str(e), rego))
+            str(e), rego_or_id))
 
 
 
@@ -446,24 +451,17 @@ class MatchToNetwork(luigi.Task):
         if DEBUG:
             if RAW_FROM_MONGO:
                 raise Exception('Cannot run debug from Mongo')
+
             _init_db_connections()
 
-
-            if RAW_DATA_FORMAT == RawDataFormat.GZIP:
-                input_files_subset = ((self.dates, (v,v)) for i, v in \
-                    enumerate(input_files) if i < DEBUG_DOC_LIMIT)
-            else:
-                input_files_subset = ((self.dates, v) for i, v in \
-                    enumerate(input_files.items()) if i < DEBUG_DOC_LIMIT)
+            input_files_subset = ((self.dates, v) for i, v in \
+                enumerate(input_files.items()) if i < DEBUG_DOC_LIMIT)
 
             work = map(lproc, input_files_subset)
             # wrap in list so we wait for jobby to finish.
             list(tqdm(work, total=DEBUG_DOC_LIMIT, smoothing=1))
         else:
-            if RAW_DATA_FORMAT == RawDataFormat.GZIP:
-                input_files_gen = ((self.dates, (v,v)) for v in input_files)
-            else:
-                input_files_gen = ((self.dates, v) for v in input_files.items())
+            input_files_gen = ((self.dates, v) for v in input_files.items())
 
             with Pool(initializer = _init_db_connections) as workers:
                 work = workers.imap_unordered(lproc, input_files_gen)

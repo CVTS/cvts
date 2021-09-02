@@ -10,7 +10,7 @@ from ._utils import (
     rawfiles2jsonfile,
     json2geojson,
     jsonfile2geojsonfile)
-from .settings import RawDataFormat, RAW_DATA_FORMAT
+from .settings import RawDataFormat, RAW_DATA_FORMAT, LAKE_FLAG
 
 if RAW_DATA_FORMAT == RawDataFormat.GZIP:
     # do this conditionally because it will fail if certain environment
@@ -22,7 +22,7 @@ if RAW_DATA_FORMAT == RawDataFormat.GZIP:
 
     def vehicle_ids():
         try:
-            return [int(i) for i in list_of_vehicles()['vehicle_id'].values]
+            return {int(i): LAKE_FLAG for i in list_of_vehicles()['vehicle_id'].values}
         except NoRawDataException:
             raise
         except Exception as e:
