@@ -143,50 +143,6 @@ def _prepjson(locs, split_trips):
 
 
 
-def mongodoc2jsonchunks(
-        doc: Dict[str, Any],
-        split_trips: bool) -> Generator[Dict[str, Any], None, None]:
-    """Create a generator over all the data for a single vehicle from data in a
-    CSV or iterable of CSVs.
-
-    :param doc: A document containing all the documents (each containing a
-        GPS point) for a vehicle.
-
-    :param split_trips: if `True`, then split into :term:`trips<trip>`,
-        otherwise return all points as a single 'trip'.
-
-    :return: A geenerator over a dicts that contain information about each GPS
-        point. Each dict looks like::
-
-            {
-                'lat':     doc['y'],
-                'lon':     doc['x'],
-                'time':    doc['datetime'],
-                'heading': doc['heading'],
-                'speed':   doc['speed'],
-                'heading_tolerance': 45,
-                'type':    'via'
-            }
-    """
-
-    raw_locs = [{
-        'lat': d['y'],
-        'lon': d['x'],
-        'time': d['datetime'],
-        'heading': d['heading'],
-        'speed': d['speed'],
-        'heading_tolerance': 45,
-        'type': 'via'} for d in doc]
-
-    base = locate_base(
-        [ll['lon'] for ll in raw_locs],
-        [ll['lat'] for ll in raw_locs],
-        [ll['speed'] for ll in raw_locs])
-
-    return base, _prepjson(raw_locs, split_trips)
-
-
-
 def gather_input_descriptors():
     input_files = defaultdict(list) if RAW_DATA_FORMAT == RawDataFormat.CSV \
         else set()

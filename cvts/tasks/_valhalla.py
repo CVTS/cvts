@@ -18,31 +18,20 @@ from .. import (
     distance,
     rawfiles2jsonchunks,
     json2geojson,
-    mongodoc2jsonchunks,
-    NoRawDataException)
+    NoRawDataException,
+    vehicle_ids)
 from ..settings import (
     DEBUG,
     DEBUG_DOC_LIMIT,
     OUT_PATH,
     SEQ_PATH,
     POSTGRES_CONNECTION_STRING,
-    RAW_FROM_MONGO,
     VALHALLA_CONFIG_FILE,
     LAKE_FLAG,
     RawDataFormat,
     RAW_DATA_FORMAT)
 from ..models import Vehicle, Base, Stop, Trip, Traversal
 from .._base_locator import EmptyCellsException
-
-if RAW_FROM_MONGO:
-    from ..mongo import (
-        create_indexes,
-        vehicle_ids,
-        docs_for_vehicle,
-        _init_db_connection as _init_mongo_db_connection)
-else:
-    def _init_mongo_db_connection(): pass
-    from .. import vehicle_ids
 
 
 
@@ -51,7 +40,6 @@ logger = logging.getLogger(__name__)
 
 
 TMP_DIR = tempfile.gettempdir()
-MONGO_VALUE = 'mongo'
 NA_VALUE = 'NA'
 POINT_KEYS = ('lat', 'lon', 'time', 'heading', 'speed', 'heading_tolerance')
 EDGE_KEYS = ('id', 'speed', 'speed_limit')
@@ -63,17 +51,6 @@ MM_KEYS = POINT_KEYS + \
 NAS = (NA_VALUE,) * len(EDGE_KEYS)
 TRAVERSAL_KEYS = ('edge_id', 'edge_index', 'status', 'speed', 'time')
 TRAVERSAL_INDS = [MM_KEYS.index(k) for k in TRAVERSAL_KEYS]
-
-
-
-def mangle_rego(rego):
-    """Mangle a name that can be easily used in a file name.
-
-    The strings produced in the anonymisation process contain characters that
-    are problematic in file names. The result of this function is much easier
-    to deal with.
-    """
-    return _hasher(rego.encode('utf-8')).hexdigest()[:24]
 
 
 
@@ -118,7 +95,6 @@ def _init_db_connections():
     # see: https://docs.sqlalchemy.org/en/13/core/pooling.html#pooling-multiprocessing
     global _engine, _session_maker
     _engine.dispose()
-    _init_mongo_db_connection()
 
 def write_to_db(vehicle, base, stops, trips, travs):
     with Session(_engine) as session, session.begin():
@@ -353,9 +329,6 @@ def _process_files(dates, fns):
     input_files = fns[1]
 
     if isinstance(input_files, str):
-        if input_files == MONGO_VALUE:
-            true_id = rego_or_id
-            rego_or_id = mangle_rego(rego_or_id)
         if input_files == LAKE_FLAG:
             input_files = rego_or_id
 
@@ -368,12 +341,7 @@ def _process_files(dates, fns):
     # Can't do this in the block above if we want to check that we must proceed
     # first.
     try:
-        if isinstance(input_files, str) and input_files == MONGO_VALUE:
-            doc = docs_for_vehicle(true_id)
-            base, trips = mongodoc2jsonchunks(doc, True, dates)
-        else:
-            base, trips = rawfiles2jsonchunks(input_files, True, dates)
-
+        base, trips = rawfiles2jsonchunks(input_files, True, dates)
 
         if RAW_DATA_FORMAT == RawDataFormat.GZIP:
             # in the case, the db was populated previously
@@ -381,7 +349,7 @@ def _process_files(dates, fns):
         else:
             vehicle = Vehicle(rego = rego_or_id)
 
-        base = Base(vehicle = vehicle, lon=base[0], lat=base[1])
+        base = Base(vehicle=vehicle, lon=base[0], lat=base[1])
 
         _process_trips(rego_or_id, trips, seq_file_name, vehicle, base)
 
@@ -411,12 +379,7 @@ class ListRawFiles(luigi.Task):
 
     def run(self):
         """:meta private:"""
-        if RAW_FROM_MONGO:
-            limit = DEBUG_DOC_LIMIT if DEBUG else None
-            input_files = {v: MONGO_VALUE for v in vehicle_ids(limit)}
-
-        else:
-            input_files = vehicle_ids()
+        input_files = vehicle_ids()
 
         with open(self.output().fn, 'wb') as pf:
             pickle.dump(input_files, pf)
@@ -440,18 +403,11 @@ class MatchToNetwork(luigi.Task):
     def run(self):
         """:meta private:"""
 
-        # first, ensure that mongo tables have indexes
-        if RAW_FROM_MONGO:
-            create_indexes()
-
         # load the input file data
         with open(self.input().fn, 'rb') as input_files_file:
             input_files = pickle.load(input_files_file)
 
         if DEBUG:
-            if RAW_FROM_MONGO:
-                raise Exception('Cannot run debug from Mongo')
-
             _init_db_connections()
 
             input_files_subset = ((self.dates, v) for i, v in \

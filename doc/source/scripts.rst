@@ -24,18 +24,15 @@ Python script for converting the json files produced by the `trace_attributes`_
 service of Valhalla to GeoJSON files. This is also useful for
 testing/playing/ect.
 
-anonymizeregos
---------------
+createdb
+--------
 
-Script for anonymizing regos in the raw data.
+TODO
 
-User will be prompted for salt, which is then added to the rego and hashed
-using sha256. Note that this while this is not recommended for passwords, it
-should be adequate for this case should (I think that if you can access the
-data, then looking at the trace will be a much easier way to determine the rego
-than brute forcing the hash).
+loadvehicles
+------------
 
-**Note that the salt must be kept secret**.
+TODO
 
 
 
@@ -82,13 +79,6 @@ Script to generate the database defined by the (ORM) classes in
 **BE CAREFUL WITH THIS... it will first drop tables and alike created previously
 and hence you can lose your data**.
 
-testmongoconnection
--------------------
-
-Test if we can connect to the mongo db. Requires that the Python package
-`pymongo`_ be installed, which can be done by installing the optional
-dependencies _mongo_ of this package.
-
 
 
 .. _trace_attributes: https://valhalla.readthedocs.io/en/latest/api/map-matching/api-reference/#outputs-of-trace_attributes
@@ -96,5 +86,3 @@ dependencies _mongo_ of this package.
 .. _Luigi: https://github.com/spotify/luigi
 
 .. _tasks: https://luigi.readthedocs.io/en/stable/tasks.html
-
-.. _pymongo: https://pypi.org/project/pymongo/

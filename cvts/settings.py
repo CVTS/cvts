@@ -5,7 +5,6 @@ from datetime import datetime as dt
 
 class RawDataFormat(Enum):
     CSV   = 1
-    MONGO = 2
     GZIP  = 3
 
 def _bool_from_env(ev):
@@ -26,33 +25,17 @@ if _building:
     #                            *****IMPORTANT*****
     # Set these to None because they may contain passwords.
     #---------------------------------------------------------------------------
-    os.environ.pop('CVTS_MONGO_CONNECTION_STRING', None)
     os.environ.pop('CVTS_POSTGRES_CONNECTION_STRING', None)
 
-#: The connections string for MongoDB. If present, raw data is read from this
-#: DB. Read from the environment variable *CVTS_MONGO_CONNECTION_STRING*.
-MONGO_CONNECTION_STRING = None
-
-#: The connections string for PostGRE. Read from the environment variable
+#: The connection string for PostGRE. Read from the environment variable
 #: *CVTS_POSTGRES_CONNECTION_STRING*.
 POSTGRES_CONNECTION_STRING = os.environ.get('CVTS_POSTGRES_CONNECTION_STRING', None)
 
 _raw_format = os.environ.get('CVTS_RAW_DATA_FORMAT', 'GZIP').upper()
 
 #: The format the raw data is stored in.
-RAW_DATA_FORMAT = RawDataFormat.MONGO if _raw_format == 'MONGO' else \
-    RawDataFormat.GZIP if _raw_format == 'GZIP' else RawDataFormat.CSV
-
-# check consistency of input data specs
-if RAW_DATA_FORMAT == RawDataFormat.MONGO \
-        and MONGO_CONNECTION_STRING is None:
-    raise Exception(
-        'raw data specified to be MONGO but ' \
-        'CVTS_MONGO_CONNECTION_STRING not specified.')
-
-#: Are we reading raw data from MongoDB. ``True`` if the environment variable
-#: *MONGO_CONNECTION_STRING* is set.
-RAW_FROM_MONGO = RAW_DATA_FORMAT == RawDataFormat.MONGO
+RAW_DATA_FORMAT = RawDataFormat.GZIP if _raw_format == 'GZIP' \
+        else RawDataFormat.CSV
 
 #: Extensions for the input files to keep. Only used if *RAW_DATA_FORMAT* is
 #: *RawDataFormat.CSV* or *RawDataFormat.GZIP*.
@@ -62,9 +45,6 @@ RAW_DATA_FILE_EXTENSIONS = ['.csv'] if RAW_DATA_FORMAT == RawDataFormat.CSV \
 _raw_dir_must_exist = RAW_DATA_FORMAT in \
     (RawDataFormat.CSV, RawDataFormat.GZIP) and \
     not (_building or _initial_setup_and_test)
-
-#: The collections to limit ourselves to in the MongoDB.
-MONGO_COLLECTION_NAMES = None
 
 #: String used to denote stuff from the lake
 LAKE_FLAG = 'lake'
@@ -117,10 +97,6 @@ WORK_PATH       = os.environ.get(
 #: Root directory for :doc:`input files<input>`.
 RAW_PATH        = _get_path('raw', _raw_dir_must_exist)
 
-#: Root directory for anonymized :doc:`input files<input>`. These are generated
-#: by the script
-ANON_RAW_PATH   = _get_path('anon_raw')
-
 #: Directory for shape files for :term:`geographies<geography>`.
 BOUNDARIES_PATH = _get_path('boundaries')
 
@@ -163,7 +139,6 @@ if __name__ == '__main__':
     print(';'.join('export CVTS_{}={}'.format(v, eval(v)) for v in (
         'WORK_PATH',
         'RAW_PATH',
-        'ANON_RAW_PATH',
         'BOUNDARIES_PATH',
         'CONFIG_PATH',
         'OUT_PATH',

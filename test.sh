@@ -51,10 +51,10 @@ valhalla_osm_network valhalla.json > vietnam-network.json
 popd; pushd test
 
 # convert the test CSV data to JSON
-../bin/csv2json test.csv test.json 0
+../scripts/csv2json test.csv test.json 0
 
 # and produce some output
 valhalla_service "$CVTS_VALHALLA_CONFIG_FILE" trace_attributes test.json > snap.json
 
 # and turn this into geojson
-../bin/json2geojson snap.json snap.geojson
+../scripts/json2geojson snap.json snap.geojson

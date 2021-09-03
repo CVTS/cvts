@@ -6,7 +6,6 @@ from ._utils import (
     DataLakeError,
     distance,
     rawfiles2jsonchunks,
-    mongodoc2jsonchunks,
     rawfiles2jsonfile,
     json2geojson,
     jsonfile2geojsonfile)

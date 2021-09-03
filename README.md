@@ -30,7 +30,7 @@ More complete documentation available [here](https://cvts.github.io/cvts/).
 - **test**: Example data for testing map matching (used by *test.sh*). Other
   file are written to this directory when *test.sh* is run.
 
-    - **test.csv**: A test 'track' (can be prepared with *bin/csv2json*).
+    - **test.csv**: A test 'track' (can be prepared with *scripts/csv2json*).
 
 - **test.sh**: A test script that downloads and prepares the data for Vietnam
   and runs an example CSV file against the
@@ -91,14 +91,6 @@ variables which are read within *cvts/settings.py*.
 
 #### Data
 
-- *CVTS_MONGO_CONNECTION_STRING*: A connection string for a MongoDB. If this is
-  specified, then raw data will be read from that DB. In the present setup, the
-  string would look something like:
-
-  *mongodb://\<username\>:\<password\>@\<host-ip-or-name\>:\<port\>/wb*.
-
-  I set this in my *~/.bashrc*.
-
 - *CVTS_POSTGRES_CONNECTION_STRING*: A connection string for the Postgres DB to
   write outputs to. The string would look something like:
 
@@ -106,17 +98,11 @@ variables which are read within *cvts/settings.py*.
 
   I set this in my *~/.bashrc* as described below.
 
-- *CVTS_RAW_PATH*: The directory in which the raw data is stored. This must be
-  specified unless the environment variable *CVTS_MONGO_CONNECTION_STRING* is
-  set. I set this in my *.bashrc*.
+- *CVTS_RAW_PATH*: The directory in which the raw data is stored.
 
 - *CVTS_WORK_PATH*: The working directory. Defaults to *~/.cvts*. All other
   output directories (with the exception of the raw data directory) are
   created or assumed to exist under this directory if not otherwise specified.
-
-- *CVTS_ANON_RAW_PATH*: The directory in which to store the outputs of
-  *bin/anonymizeregos*. If not specified, this will be created under the
-  directory specified by *CVTS_WORK_PATH*.
 
 - *CVTS_BOUNDARIES_PATH*: The directory in regional shape files are stored. If
   not specified it will be assumed to be under under the directory specified by

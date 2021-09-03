@@ -9,14 +9,10 @@ setup(
     python_requires='>=3',
     packages=find_packages(),
     scripts=[
-        'bin/anonymizeregos',
-        'bin/collectionnames',
         'bin/createpgdb',
-        'bin/csv2json',
         'bin/json2geojson',
         'bin/processall',
-        'bin/processtraces',
-        'bin/testmongoconnection'],
+        'bin/processtraces'],
     install_requires=[
         'dataclasses',
         'luigi',
@@ -33,9 +29,8 @@ setup(
     extras_require={
         "dev": [
             "ipython",
+            "pyinstrument",
             "pytest",
             "sphinx",
-            "sphinx-autodoc-typehints"],
-        "mongo": [
-            "pymongo"]}
+            "sphinx-autodoc-typehints"]}
 )

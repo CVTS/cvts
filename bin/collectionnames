@@ -1,8 +1,0 @@
-#!/usr/bin/env python
-
-from pprint import pprint
-from cvts.mongo import all_collection_names
-
-acn = all_collection_names()
-pprint(acn)
-print('n: {}'. format(len(acn)))
