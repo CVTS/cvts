@@ -12,6 +12,14 @@ Subpackages
 Submodules
 ----------
 
+cvts.models module
+------------------
+
+.. automodule:: cvts.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 cvts.settings module
 --------------------
 

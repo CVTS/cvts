@@ -57,15 +57,13 @@ single files when testing/playing/etc.</p>
 service of Valhalla to GeoJSON files. This is also useful for
 testing/playing/ect.</p>
 </section>
-<section id="anonymizeregos">
-<h3>anonymizeregos<a class="headerlink" href="#anonymizeregos" title="Permalink to this headline">¶</a></h3>
-<p>Script for anonymizing regos in the raw data.</p>
-<p>User will be prompted for salt, which is then added to the rego and hashed
-using sha256. Note that this while this is not recommended for passwords, it
-should be adequate for this case should (I think that if you can access the
-data, then looking at the trace will be a much easier way to determine the rego
-than brute forcing the hash).</p>
-<p><strong>Note that the salt must be kept secret</strong>.</p>
+<section id="createdb">
+<h3>createdb<a class="headerlink" href="#createdb" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</section>
+<section id="loadvehicles">
+<h3>loadvehicles<a class="headerlink" href="#loadvehicles" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
 </section>
 </section>
 <section id="entry-points-for-the-luigi-workflow">
@@ -76,22 +74,30 @@ than brute forcing the hash).</p>
 <h3>processtraces<a class="headerlink" href="#processtraces" title="Permalink to this headline">¶</a></h3>
 <p>Script for matching all raw data to the road network.</p>
 </section>
-<section id="regioncounts">
-<h3>regioncounts<a class="headerlink" href="#regioncounts" title="Permalink to this headline">¶</a></h3>
+<section id="processall">
+<h3>processall<a class="headerlink" href="#processall" title="Permalink to this headline">¶</a></h3>
 <p>Script for extracting:</p>
 <ul class="simple">
 <li><p>stops by region,</p></li>
-<li><p>stops on a (0.1 degree) raster, and</p></li>
-<li><p>source and destination counts.</p></li>
+<li><p>stops on a (0.1 degree) raster,</p></li>
+<li><p>source and destination counts,</p></li>
+<li><p>speeds by <a class="reference internal" href="index.html#term-way-id"><span class="xref std std-term">way ids</span></a>. These are calculated by road segment by
+time of day for each vehicle. These are first produced on disk, then saved in
+an SQL database (see <a class="reference internal" href="cvts.html#cvts.models.Traversal" title="cvts.models.Traversal"><code class="xref py py-class docutils literal notranslate"><span class="pre">cvts.models.Traversal</span></code></a> for an ORM
+representation of the the rows).</p></li>
 </ul>
+<p>Because of the dependencies, this would also trigger the (<a class="reference external" href="https://github.com/spotify/luigi">Luigi</a>) tasks that
+would be run by <a class="reference internal" href="#processtraces">processtraces</a> if required.</p>
 </section>
-<section id="speed">
-<h3>speed<a class="headerlink" href="#speed" title="Permalink to this headline">¶</a></h3>
-<p>Script for calculating speed by road segment by time of day for each vehicle.
-What we would really like, is to have the results of this summarised for all
-vehicles. We have not yet got to doing that, which would be best done with a
-DB, Hadoop or some other thing that would be more suited than straight Python
-code.</p>
+</section>
+<section id="misc">
+<h2>Misc<a class="headerlink" href="#misc" title="Permalink to this headline">¶</a></h2>
+<section id="createpgdb">
+<h3>createpgdb<a class="headerlink" href="#createpgdb" title="Permalink to this headline">¶</a></h3>
+<p>Script to generate the database defined by the (ORM) classes in
+<a class="reference internal" href="cvts.html#module-cvts.models" title="cvts.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cvts.models</span></code></a>.</p>
+<p><strong>BE CAREFUL WITH THIS… it will first drop tables and alike created previously
+and hence you can lose your data</strong>.</p>
 </section>
 </section>
 </section>
@@ -113,6 +119,7 @@ code.</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Scripts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#utilities-for-individual-files">Utilities for Individual Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#entry-points-for-the-luigi-workflow">Entry Points for the (Luigi) Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#misc">Misc</a></li>
 </ul>
 </li>
 </ul>

@@ -49,18 +49,6 @@
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cvts.tasks" title="Permalink to this headline">¶</a></h2>
 <p>Luigi tasks.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="cvts.tasks.AverageSpeed">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.tasks.</span></span><span class="sig-name descname"><span class="pre">AverageSpeed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.tasks.AverageSpeed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">luigi.task.Task</span></code></p>
-<p>Collects all the stop points for all trips of all vehicles.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cvts.tasks.AverageSpeed.pickle_file_name">
-<span class="sig-name descname"><span class="pre">pickle_file_name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/output/ave_speeds.pkl'</span></em><a class="headerlink" href="#cvts.tasks.AverageSpeed.pickle_file_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="cvts.tasks.ListRawFiles">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.tasks.</span></span><span class="sig-name descname"><span class="pre">ListRawFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.tasks.ListRawFiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">luigi.task.Task</span></code></p>
@@ -78,8 +66,8 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">luigi.task.Task</span></code></p>
 <p>Match trips to the network.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="cvts.tasks.MatchToNetwork.mm_file_name">
-<span class="sig-name descname"><span class="pre">mm_file_name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/output/mm_files.pkl'</span></em><a class="headerlink" href="#cvts.tasks.MatchToNetwork.mm_file_name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvts.tasks.MatchToNetwork.dates">
+<span class="sig-name descname"><span class="pre">dates</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;luigi.parameter.Parameter</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#cvts.tasks.MatchToNetwork.dates" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -95,8 +83,8 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">luigi.task.Task</span></code></p>
 <p>Counts the number of stop points in each cell of a raster.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="cvts.tasks.RasterCounts.ascii_grid_file_name">
-<span class="sig-name descname"><span class="pre">ascii_grid_file_name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/output/grid_points.asc'</span></em><a class="headerlink" href="#cvts.tasks.RasterCounts.ascii_grid_file_name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvts.tasks.RasterCounts.ASCII_GRID_FILE_NAME">
+<span class="sig-name descname"><span class="pre">ASCII_GRID_FILE_NAME</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/output/grid_points.asc'</span></em><a class="headerlink" href="#cvts.tasks.RasterCounts.ASCII_GRID_FILE_NAME" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -106,18 +94,10 @@
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.tasks.</span></span><span class="sig-name descname"><span class="pre">RegionCounts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.tasks.RegionCounts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">cvts.tasks._regiondensity._CountsTask</span></code></p>
 <p>Counts the number of stop points in each region.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cvts.tasks.RegionCounts.csv_file_basename">
-<span class="sig-name descname"><span class="pre">csv_file_basename</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'stop_points_geom_counts.csv'</span></em><a class="headerlink" href="#cvts.tasks.RegionCounts.csv_file_basename" title="Permalink to this definition">¶</a></dt>
-<dd><p>The name of the (CSV) file, relative to <a class="reference internal" href="cvts.html#cvts.settings.OUT_PATH" title="cvts.settings.OUT_PATH"><code class="xref py py-data docutils literal notranslate"><span class="pre">cvts.settings.OUT_PATH</span></code></a>, to save
-the table of counts of stop points by region in.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cvts.tasks.RegionCounts.pickle_file_basename">
-<span class="sig-name descname"><span class="pre">pickle_file_basename</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'stop_points_geom_counts.pkl'</span></em><a class="headerlink" href="#cvts.tasks.RegionCounts.pickle_file_basename" title="Permalink to this definition">¶</a></dt>
-<dd><p>The name of the (pickle) file, relative to <a class="reference internal" href="cvts.html#cvts.settings.OUT_PATH" title="cvts.settings.OUT_PATH"><code class="xref py py-data docutils literal notranslate"><span class="pre">cvts.settings.OUT_PATH</span></code></a>, to save
-the table of counts of stop points by region in.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cvts.tasks.RegionCounts.METRIC">
+<span class="sig-name descname"><span class="pre">METRIC</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cvts.tasks.RegionCounts.METRIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the metric we are using.</p>
 </dd></dl>
 
 </dd></dl>
@@ -127,18 +107,10 @@ the table of counts of stop points by region in.</p>
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.tasks.</span></span><span class="sig-name descname"><span class="pre">SourceDestinationCounts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.tasks.SourceDestinationCounts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">cvts.tasks._regiondensity._CountsTask</span></code></p>
 <p>Counts the number of stop points in each region.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cvts.tasks.SourceDestinationCounts.csv_file_basename">
-<span class="sig-name descname"><span class="pre">csv_file_basename</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'src_dest_points_geom_counts.csv'</span></em><a class="headerlink" href="#cvts.tasks.SourceDestinationCounts.csv_file_basename" title="Permalink to this definition">¶</a></dt>
-<dd><p>The name of the (CSV) file, relative to <a class="reference internal" href="cvts.html#cvts.settings.OUT_PATH" title="cvts.settings.OUT_PATH"><code class="xref py py-data docutils literal notranslate"><span class="pre">cvts.settings.OUT_PATH</span></code></a>, to save
-the table of counts of source/destination counts by region in.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cvts.tasks.SourceDestinationCounts.pickle_file_basename">
-<span class="sig-name descname"><span class="pre">pickle_file_basename</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'src_dest_points_geom_counts.pkl'</span></em><a class="headerlink" href="#cvts.tasks.SourceDestinationCounts.pickle_file_basename" title="Permalink to this definition">¶</a></dt>
-<dd><p>The name of the (pickle) file, relative to <a class="reference internal" href="cvts.html#cvts.settings.OUT_PATH" title="cvts.settings.OUT_PATH"><code class="xref py py-data docutils literal notranslate"><span class="pre">cvts.settings.OUT_PATH</span></code></a>, to save
-the table of counts of source/destination counts by region pairs in.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cvts.tasks.SourceDestinationCounts.METRIC">
+<span class="sig-name descname"><span class="pre">METRIC</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cvts.tasks.SourceDestinationCounts.METRIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the metric we are using.</p>
 </dd></dl>
 
 </dd></dl>
@@ -159,6 +131,7 @@ the table of counts of source/destination counts by region pairs in.</p>
 <li class="toctree-l1 current"><a class="reference internal" href="cvts.html">cvts package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="cvts.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cvts.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cvts.html#module-cvts.models">cvts.models module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cvts.html#module-cvts.settings">cvts.settings module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cvts.html#module-cvts">Module contents</a></li>
 </ul>

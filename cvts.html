@@ -16,14 +16,14 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="cvts.tasks package" href="cvts.tasks.html" />
-    <link rel="prev" title="YDYR’s Developer Documentation" href="index.html" /> 
+    <link rel="prev" title="CVTS’s Developer Documentation" href="index.html" /> 
   </head><body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">cvts 0.0.2 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
-          <a href="index.html" title="YDYR’s Developer Documentation"
+          <a href="index.html" title="CVTS’s Developer Documentation"
              accesskey="P">previous</a> |
           <a href="cvts.tasks.html" title="cvts.tasks package"
              accesskey="N">next</a> |
@@ -59,24 +59,293 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </section>
+<section id="module-cvts.models">
+<span id="cvts-models-module"></span><h2>cvts.models module<a class="headerlink" href="#module-cvts.models" title="Permalink to this headline">¶</a></h2>
+<p>Module providing an ORM for objects of interest.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cvts.models.Base">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.models.</span></span><span class="sig-name descname"><span class="pre">Base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.models.Base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<p>The location a vehicle is garraged.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Base.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#cvts.models.Base.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Base.lat">
+<span class="sig-name descname"><span class="pre">lat</span></span><a class="headerlink" href="#cvts.models.Base.lat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Base.lon">
+<span class="sig-name descname"><span class="pre">lon</span></span><a class="headerlink" href="#cvts.models.Base.lon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Base.vehicle">
+<span class="sig-name descname"><span class="pre">vehicle</span></span><a class="headerlink" href="#cvts.models.Base.vehicle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Base.vehicle_id">
+<span class="sig-name descname"><span class="pre">vehicle_id</span></span><a class="headerlink" href="#cvts.models.Base.vehicle_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cvts.models.Stop">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.models.</span></span><span class="sig-name descname"><span class="pre">Stop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.models.Stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<p>The location a vehicle is garraged.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.end_lat">
+<span class="sig-name descname"><span class="pre">end_lat</span></span><a class="headerlink" href="#cvts.models.Stop.end_lat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.end_lon">
+<span class="sig-name descname"><span class="pre">end_lon</span></span><a class="headerlink" href="#cvts.models.Stop.end_lon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.end_time">
+<span class="sig-name descname"><span class="pre">end_time</span></span><a class="headerlink" href="#cvts.models.Stop.end_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#cvts.models.Stop.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.n_stationary">
+<span class="sig-name descname"><span class="pre">n_stationary</span></span><a class="headerlink" href="#cvts.models.Stop.n_stationary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.start_end_dist">
+<span class="sig-name descname"><span class="pre">start_end_dist</span></span><a class="headerlink" href="#cvts.models.Stop.start_end_dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.start_lat">
+<span class="sig-name descname"><span class="pre">start_lat</span></span><a class="headerlink" href="#cvts.models.Stop.start_lat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.start_lon">
+<span class="sig-name descname"><span class="pre">start_lon</span></span><a class="headerlink" href="#cvts.models.Stop.start_lon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.start_time">
+<span class="sig-name descname"><span class="pre">start_time</span></span><a class="headerlink" href="#cvts.models.Stop.start_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.vehicle">
+<span class="sig-name descname"><span class="pre">vehicle</span></span><a class="headerlink" href="#cvts.models.Stop.vehicle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Stop.vehicle_id">
+<span class="sig-name descname"><span class="pre">vehicle_id</span></span><a class="headerlink" href="#cvts.models.Stop.vehicle_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cvts.models.Traversal">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.models.</span></span><span class="sig-name descname"><span class="pre">Traversal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.models.Traversal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<p>A traversal of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.count">
+<span class="sig-name descname"><span class="pre">count</span></span><a class="headerlink" href="#cvts.models.Traversal.count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.dow">
+<span class="sig-name descname"><span class="pre">dow</span></span><a class="headerlink" href="#cvts.models.Traversal.dow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.doy">
+<span class="sig-name descname"><span class="pre">doy</span></span><a class="headerlink" href="#cvts.models.Traversal.doy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.edge">
+<span class="sig-name descname"><span class="pre">edge</span></span><a class="headerlink" href="#cvts.models.Traversal.edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.hour">
+<span class="sig-name descname"><span class="pre">hour</span></span><a class="headerlink" href="#cvts.models.Traversal.hour" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#cvts.models.Traversal.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.speed">
+<span class="sig-name descname"><span class="pre">speed</span></span><a class="headerlink" href="#cvts.models.Traversal.speed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><a class="headerlink" href="#cvts.models.Traversal.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.trip">
+<span class="sig-name descname"><span class="pre">trip</span></span><a class="headerlink" href="#cvts.models.Traversal.trip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.trip_id">
+<span class="sig-name descname"><span class="pre">trip_id</span></span><a class="headerlink" href="#cvts.models.Traversal.trip_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.vehicle">
+<span class="sig-name descname"><span class="pre">vehicle</span></span><a class="headerlink" href="#cvts.models.Traversal.vehicle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.vehicle_id">
+<span class="sig-name descname"><span class="pre">vehicle_id</span></span><a class="headerlink" href="#cvts.models.Traversal.vehicle_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Traversal.woy">
+<span class="sig-name descname"><span class="pre">woy</span></span><a class="headerlink" href="#cvts.models.Traversal.woy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cvts.models.Trip">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.models.</span></span><span class="sig-name descname"><span class="pre">Trip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.models.Trip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<p>The location a vehicle is garraged.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Trip.end">
+<span class="sig-name descname"><span class="pre">end</span></span><a class="headerlink" href="#cvts.models.Trip.end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Trip.end_id">
+<span class="sig-name descname"><span class="pre">end_id</span></span><a class="headerlink" href="#cvts.models.Trip.end_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Trip.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#cvts.models.Trip.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Trip.start">
+<span class="sig-name descname"><span class="pre">start</span></span><a class="headerlink" href="#cvts.models.Trip.start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Trip.start_id">
+<span class="sig-name descname"><span class="pre">start_id</span></span><a class="headerlink" href="#cvts.models.Trip.start_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Trip.vehicle">
+<span class="sig-name descname"><span class="pre">vehicle</span></span><a class="headerlink" href="#cvts.models.Trip.vehicle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Trip.vehicle_id">
+<span class="sig-name descname"><span class="pre">vehicle_id</span></span><a class="headerlink" href="#cvts.models.Trip.vehicle_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cvts.models.Vehicle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.models.</span></span><span class="sig-name descname"><span class="pre">Vehicle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.models.Vehicle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<p>Data on a vehicle.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Vehicle.etl_id">
+<span class="sig-name descname"><span class="pre">etl_id</span></span><a class="headerlink" href="#cvts.models.Vehicle.etl_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Vehicle.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#cvts.models.Vehicle.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Vehicle.rego">
+<span class="sig-name descname"><span class="pre">rego</span></span><a class="headerlink" href="#cvts.models.Vehicle.rego" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Vehicle.vehicle_type">
+<span class="sig-name descname"><span class="pre">vehicle_type</span></span><a class="headerlink" href="#cvts.models.Vehicle.vehicle_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.Vehicle.vehicle_type_id">
+<span class="sig-name descname"><span class="pre">vehicle_type_id</span></span><a class="headerlink" href="#cvts.models.Vehicle.vehicle_type_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cvts.models.VehicleType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.models.</span></span><span class="sig-name descname"><span class="pre">VehicleType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.models.VehicleType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<p>A list of vehicle types.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.VehicleType.code">
+<span class="sig-name descname"><span class="pre">code</span></span><a class="headerlink" href="#cvts.models.VehicleType.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.VehicleType.group">
+<span class="sig-name descname"><span class="pre">group</span></span><a class="headerlink" href="#cvts.models.VehicleType.group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.VehicleType.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#cvts.models.VehicleType.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.VehicleType.type_en">
+<span class="sig-name descname"><span class="pre">type_en</span></span><a class="headerlink" href="#cvts.models.VehicleType.type_en" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.models.VehicleType.type_vn">
+<span class="sig-name descname"><span class="pre">type_vn</span></span><a class="headerlink" href="#cvts.models.VehicleType.type_vn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-cvts.settings">
 <span id="cvts-settings-module"></span><h2>cvts.settings module<a class="headerlink" href="#module-cvts.settings" title="Permalink to this headline">¶</a></h2>
 <dl class="py data">
-<dt class="sig sig-object py" id="cvts.settings.ANON_RAW_PATH">
-<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">ANON_RAW_PATH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/anon_raw'</span></em><a class="headerlink" href="#cvts.settings.ANON_RAW_PATH" title="Permalink to this definition">¶</a></dt>
-<dd><p>Root directory for anonymized <a class="reference internal" href="input.html"><span class="doc">input files</span></a>. These are generated
-by the script</p>
-</dd></dl>
-
-<dl class="py data">
 <dt class="sig sig-object py" id="cvts.settings.BOUNDARIES_PATH">
-<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">BOUNDARIES_PATH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/boundaries'</span></em><a class="headerlink" href="#cvts.settings.BOUNDARIES_PATH" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">BOUNDARIES_PATH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'/home/kna012/.cvts/boundaries'</span></em><a class="headerlink" href="#cvts.settings.BOUNDARIES_PATH" title="Permalink to this definition">¶</a></dt>
 <dd><p>Directory for shape files for <a class="reference internal" href="index.html#term-geography"><span class="xref std std-term">geographies</span></a>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="cvts.settings.CONFIG_PATH">
-<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">CONFIG_PATH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/config'</span></em><a class="headerlink" href="#cvts.settings.CONFIG_PATH" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">CONFIG_PATH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'/home/kna012/.cvts/config'</span></em><a class="headerlink" href="#cvts.settings.CONFIG_PATH" title="Permalink to this definition">¶</a></dt>
 <dd><p>Directory containing <a class="reference internal" href="#cvts.settings.VALHALLA_CONFIG_FILE" title="cvts.settings.VALHALLA_CONFIG_FILE"><code class="xref py py-data docutils literal notranslate"><span class="pre">VALHALLA_CONFIG_FILE</span></code></a></p>
 </dd></dl>
 
@@ -93,6 +362,19 @@ by the script</p>
 </dd></dl>
 
 <dl class="py data">
+<dt class="sig sig-object py" id="cvts.settings.LAKE_FLAG">
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">LAKE_FLAG</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'lake'</span></em><a class="headerlink" href="#cvts.settings.LAKE_FLAG" title="Permalink to this definition">¶</a></dt>
+<dd><p>String used to denote stuff from the lake</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="cvts.settings.MIN_DISTANCE_BETWEEN_STOPS">
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">MIN_DISTANCE_BETWEEN_STOPS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">50</span></em><a class="headerlink" href="#cvts.settings.MIN_DISTANCE_BETWEEN_STOPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>The distance between two stops below which they are considered to be the same
+location.</p>
+</dd></dl>
+
+<dl class="py data">
 <dt class="sig sig-object py" id="cvts.settings.MIN_MOVE_DISTANCE">
 <span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">MIN_MOVE_DISTANCE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">50</span></em><a class="headerlink" href="#cvts.settings.MIN_MOVE_DISTANCE" title="Permalink to this definition">¶</a></dt>
 <dd><p>The minimum distance a vehicle can move between two (potentially non-adjacent)
@@ -101,22 +383,16 @@ GPS points to not be considered ‘moving’ in meters.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="cvts.settings.MIN_MOVING_SPEED">
-<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">MIN_MOVING_SPEED</span></span><em class="property"> <span class="pre">=</span> <span class="pre">6</span></em><a class="headerlink" href="#cvts.settings.MIN_MOVING_SPEED" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">MIN_MOVING_SPEED</span></span><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#cvts.settings.MIN_MOVING_SPEED" title="Permalink to this definition">¶</a></dt>
 <dd><p>The minimum speed a vehicle can be moving to be considered ‘moving’ in
 kilometers per hour.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="cvts.settings.MIN_STOP_TIME">
-<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">MIN_STOP_TIME</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1200</span></em><a class="headerlink" href="#cvts.settings.MIN_STOP_TIME" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">MIN_STOP_TIME</span></span><em class="property"> <span class="pre">=</span> <span class="pre">480</span></em><a class="headerlink" href="#cvts.settings.MIN_STOP_TIME" title="Permalink to this definition">¶</a></dt>
 <dd><p>The minimum time a vehicle must not move for to be considered ‘stopped’ in
 seconds.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="cvts.settings.MM_PATH">
-<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">MM_PATH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/output/mm'</span></em><a class="headerlink" href="#cvts.settings.MM_PATH" title="Permalink to this definition">¶</a></dt>
-<dd><p>Output directory for <a class="reference internal" href="output.html#map-matching-output"><span class="std std-ref">map matching outputs</span></a>.</p>
 </dd></dl>
 
 <dl class="py data">
@@ -126,9 +402,46 @@ seconds.</p>
 </dd></dl>
 
 <dl class="py data">
+<dt class="sig sig-object py" id="cvts.settings.POSTGRES_CONNECTION_STRING">
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">POSTGRES_CONNECTION_STRING</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#cvts.settings.POSTGRES_CONNECTION_STRING" title="Permalink to this definition">¶</a></dt>
+<dd><p>The connection string for PostGRE. Read from the environment variable
+<em>CVTS_POSTGRES_CONNECTION_STRING</em>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="cvts.settings.RAW_DATA_FILE_EXTENSIONS">
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">RAW_DATA_FILE_EXTENSIONS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['.csv']</span></em><a class="headerlink" href="#cvts.settings.RAW_DATA_FILE_EXTENSIONS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extensions for the input files to keep. Only used if <em>RAW_DATA_FORMAT</em> is
+<em>RawDataFormat.CSV</em> or <em>RawDataFormat.GZIP</em>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="cvts.settings.RAW_DATA_FORMAT">
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">RAW_DATA_FORMAT</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;RawDataFormat.CSV:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#cvts.settings.RAW_DATA_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd><p>The format the raw data is stored in.</p>
+</dd></dl>
+
+<dl class="py data">
 <dt class="sig sig-object py" id="cvts.settings.RAW_PATH">
-<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">RAW_PATH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/raw'</span></em><a class="headerlink" href="#cvts.settings.RAW_PATH" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">RAW_PATH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'/home/kna012/.cvts/raw'</span></em><a class="headerlink" href="#cvts.settings.RAW_PATH" title="Permalink to this definition">¶</a></dt>
 <dd><p>Root directory for <a class="reference internal" href="input.html"><span class="doc">input files</span></a>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cvts.settings.RawDataFormat">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">RawDataFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.settings.RawDataFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.settings.RawDataFormat.CSV">
+<span class="sig-name descname"><span class="pre">CSV</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#cvts.settings.RawDataFormat.CSV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.settings.RawDataFormat.GZIP">
+<span class="sig-name descname"><span class="pre">GZIP</span></span><em class="property"> <span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#cvts.settings.RawDataFormat.GZIP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py data">
@@ -157,7 +470,7 @@ seconds.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="cvts.settings.VALHALLA_CONFIG_FILE">
-<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">VALHALLA_CONFIG_FILE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'~/.cvts/config/valhalla.json'</span></em><a class="headerlink" href="#cvts.settings.VALHALLA_CONFIG_FILE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">VALHALLA_CONFIG_FILE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'/home/kna012/.cvts/config/valhalla.json'</span></em><a class="headerlink" href="#cvts.settings.VALHALLA_CONFIG_FILE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path to Valhalla configuration file.</p>
 </dd></dl>
 
@@ -167,9 +480,43 @@ seconds.</p>
 <dd><p>Default root directory</p>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="cvts.settings.setup_logging">
+<span class="sig-prename descclassname"><span class="pre">cvts.settings.</span></span><span class="sig-name descname"><span class="pre">setup_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.settings.setup_logging" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-cvts">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cvts" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="cvts.DataLakeError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.</span></span><span class="sig-name descname"><span class="pre">DataLakeError</span></span><a class="headerlink" href="#cvts.DataLakeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="cvts.NoRawDataException">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.</span></span><span class="sig-name descname"><span class="pre">NoRawDataException</span></span><a class="headerlink" href="#cvts.NoRawDataException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cvts.RawDataFormat">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cvts.</span></span><span class="sig-name descname"><span class="pre">RawDataFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.RawDataFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.RawDataFormat.CSV">
+<span class="sig-name descname"><span class="pre">CSV</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#cvts.RawDataFormat.CSV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cvts.RawDataFormat.GZIP">
+<span class="sig-name descname"><span class="pre">GZIP</span></span><em class="property"> <span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#cvts.RawDataFormat.GZIP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="cvts.distance">
 <span class="sig-prename descclassname"><span class="pre">cvts.</span></span><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.distance" title="Permalink to this definition">¶</a></dt>
@@ -196,7 +543,7 @@ and <em>y1</em> are (very) small).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvts.json2geojson">
-<span class="sig-prename descclassname"><span class="pre">cvts.</span></span><span class="sig-name descname"><span class="pre">json2geojson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.json2geojson" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvts.</span></span><span class="sig-name descname"><span class="pre">json2geojson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_only</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.json2geojson" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the output from Valhalla to a GeoJSON object.</p>
 <p>On the command line, the call would look like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">valhalla_service</span> <span class="o">&lt;</span><span class="n">config</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span> <span class="n">trace_attributes</span> <span class="o">&lt;</span><span class="nb">input</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span>
@@ -204,7 +551,11 @@ and <em>y1</em> are (very) small).</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]) – Output of a call to Valhalla (as described above).</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]) – Output of a call to Valhalla (as described above).</p></li>
+<li><p><strong>shape_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Should the returned GeoJSON only include the <em>shape</em>
+element from <em>data</em>?</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
@@ -244,16 +595,17 @@ for a geography.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvts.rawfiles2jsonchunks">
-<span class="sig-prename descclassname"><span class="pre">cvts.</span></span><span class="sig-name descname"><span class="pre">rawfiles2jsonchunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_trips</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.rawfiles2jsonchunks" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvts.</span></span><span class="sig-name descname"><span class="pre">rawfiles2jsonchunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_descriptor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_trips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvts.rawfiles2jsonchunks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a generator over all the data for a single vehicle from data in a
 csv or iterable of csvs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]) – Either the name of a
+<li><p><strong>input_descriptor</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]) – Either the name of a
 <a class="reference internal" href="input.html#gps-data"><span class="std std-ref">GPS data</span></a> file or an iterable of names of such files.</p></li>
 <li><p><strong>split_trips</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – if <cite>True</cite>, then split into <a class="reference internal" href="index.html#term-trip"><span class="xref std std-term">trips</span></a>,
 otherwise return all points as a single ‘trip’.</p></li>
+<li><p><strong>dates</strong> (<em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.9)"><em>datetime.date</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -315,6 +667,11 @@ should contain the identifier for the geometries.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="cvts.vehicle_ids">
+<span class="sig-prename descclassname"><span class="pre">cvts.</span></span><span class="sig-name descname"><span class="pre">vehicle_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cvts.vehicle_ids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 </section>
 
@@ -331,6 +688,7 @@ should contain the identifier for the geometries.</p></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">cvts package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cvts.models">cvts.models module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cvts.settings">cvts.settings module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cvts">Module contents</a></li>
 </ul>
@@ -358,7 +716,7 @@ should contain the identifier for the geometries.</p></li>
       <div class="footer">
         <div class="left">
           <div role="navigation" aria-label="related navigaton">
-            <a href="index.html" title="YDYR’s Developer Documentation"
+            <a href="index.html" title="CVTS’s Developer Documentation"
               >previous</a> |
             <a href="cvts.tasks.html" title="cvts.tasks package"
               >next</a> |
