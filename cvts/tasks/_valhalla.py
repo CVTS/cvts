@@ -90,7 +90,11 @@ def _run_valhalla(rego, trip, trip_index):
 
 
 
-_engine = create_engine(POSTGRES_CONNECTION_STRING)
+try:
+    # this breaks the documentation build
+    _engine = create_engine(POSTGRES_CONNECTION_STRING)
+except:
+    pass
 def _init_db_connections():
     # see: https://docs.sqlalchemy.org/en/13/core/pooling.html#pooling-multiprocessing
     global _engine, _session_maker

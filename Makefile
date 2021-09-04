@@ -1,4 +1,5 @@
 DOC_BUILD_DIR=/tmp/cvts-pages
+DOC_BUILD_BRANCH_NAME=never-ever-create-a-branch-named-9tkjfdghishiaytfiriough
 
 .PHONY: initial-setup latest-cmake setup-valhalla setup-postgre venv sphinx-doc push-doc clean clean-sphinx-doc
 
@@ -45,14 +46,17 @@ sphinx-doc: clean-sphinx-doc
 	    && PYTHONPATH=$(CURDIR) sphinx-build -b html . ../build
 
 push-doc: sphinx-doc
-	if [ ! -d $(DOC_BUILD_DIR) ]; then git worktree add $(DOC_BUILD_DIR) gh-pages; fi
-	cp -r doc/build/* $(DOC_BUILD_DIR) && \
+	git fetch origin gh-pages
+	if [ ! -d $(DOC_BUILD_DIR) ]; then git worktree add $(DOC_BUILD_DIR) origin/gh-pages; fi
+	-cp -r doc/build/* $(DOC_BUILD_DIR) && \
 	    cd $(DOC_BUILD_DIR) && \
 	    git add -A && \
-	    git commit -m "Updates of Documenation."
-	git push -f origin gh-pages
+	    git checkout -b $(DOC_BUILD_BRANCH_NAME) && \
+	    git commit -m "Updates of Documenation." && \
+	    git push origin $(DOC_BUILD_BRANCH_NAME):gh-pages
 	rm -rf $(DOC_BUILD_DIR)
 	git worktree prune
+	git branch -D $(DOC_BUILD_BRANCH_NAME)
 
 clean: clean-sphinx-doc
 	rm -rf build/ dist/ *.egg-info
