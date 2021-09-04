@@ -41,4 +41,18 @@ Ctrl-B D   Disconnect from the current session
 ```
 
 
-In one of these tmux windows run the 
+In one of these tmux windows run the jupyter launcher
+
+```bash
+./scripts/launch_tunneled_jupyter_lab.sh
+```
+
+When jupyter launches it should give you some urls that you can copy paste into your browser. Make sure to include the token
+
+```
+http://localhost:7799/lab?token=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Your jupyter lab session is now availble in your browser and any code that you run will be run on mapmatcher instance (and have access to the data on that machine). 
+
+Good Luck!

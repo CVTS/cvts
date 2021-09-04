@@ -1,6 +1,5 @@
 # CVTS
 
-Misc stuff related to the CVTS project.
 
 More complete documentation available [here](https://cvts.github.io/cvts/).
 
