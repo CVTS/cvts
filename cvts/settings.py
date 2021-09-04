@@ -35,7 +35,7 @@ _raw_format = os.environ.get('CVTS_RAW_DATA_FORMAT', 'GZIP').upper()
 
 #: The format the raw data is stored in.
 RAW_DATA_FORMAT = RawDataFormat.GZIP if _raw_format == 'GZIP' \
-        else RawDataFormat.CSV
+    else RawDataFormat.CSV
 
 #: Extensions for the input files to keep. Only used if *RAW_DATA_FORMAT* is
 #: *RawDataFormat.CSV* or *RawDataFormat.GZIP*.

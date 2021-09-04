@@ -19,6 +19,8 @@ More complete documentation available [here](https://cvts.github.io/cvts/).
 
 - **Makefile**: Some common tasks.
 
+- **notebooks**: Jupyter notebooks.
+
 - **ops**: (Ansible) code for provisioning the system.
 
 - **requirements.txt**: Python requirements.
@@ -98,6 +100,28 @@ variables which are read within *cvts/settings.py*.
 
   I set this in my *~/.bashrc* as described below.
 
+- *CVTS_RAW_DATA_FORMAT*: The 'format' the raw data is stored in. It does not
+  actually reflect the raw format, but environments in which we have stored raw
+  data previously. If this is set to *GZIP* then we are expecting a data layout
+  implied by the script *cvts/_data_retrieval.py* (in this case the environment
+  variables *DATALAKE_RAW_PATH* and *DATALAKE_CONNECTION_STRING* --- see
+  below--- must be set also). Otherwise we are expecting
+  a layout with:
+
+    - a root folder containing a directories with names of the form *%Y%m%d*,
+      where *%Y* is four digit year, *%m* is two digit month, and *%d* is two
+      digit day.
+
+    - CSV files for each day in these subfolders. The name of the file is
+      interpreted as the vehicles identifier, the expected format is:
+
+        ```
+        Index,PlateNumber,Latitude,Longitude,speed,Orientation,VehicleType,Weight,Time
+        1,1,108.189498901367,11.0894994735718,17,32,1,1,1501545628
+        2,1,108.189796447754,11.0899000167847,9,302.5,1,1,1501545658
+        3,1,108.189796447754,11.0899295806885,0,95.5,1,1,1501545779
+        ```
+
 - *CVTS_RAW_PATH*: The directory in which the raw data is stored.
 
 - *CVTS_WORK_PATH*: The working directory. Defaults to *~/.cvts*. All other
@@ -118,10 +142,16 @@ variables which are read within *cvts/settings.py*.
   specified, this will be created under the directory specified by
   *CVTS_WORK_PATH*.
 
+- *DATALAKE_RAW_PATH*: The root folder for the 'data lake'. see
+  *cvts/_data_retrieval.py* for how this is used.
 
-#### Postgres
+- *DATALAKE_CONNECTION_STRING*: The connection string for the DB containing data
+  about the 'data lake'. see *cvts/_data_retrieval.py* for how this is used.
 
-Some results are saved in postgres.
+
+#### PostgreSQL
+
+Most results are saved in PostgreSQL.
 
 I set the connection string up in my *~/.bashrc* with the following.
 
@@ -134,7 +164,9 @@ export CVTS_POSTGRES_PASS=secure-password
 export CVTS_POSTGRES_CONNECTION_STRING=postgresql://"$CVTS_POSTGRES_USER":"$CVTS_POSTGRES_PASS"@"$CVTS_POSTGRES_IP":"$CVTS_POSTGRES_PORT"/"$CVTS_POSTGRES_DB"
 ```
 
-With these environment variables exported, the script *scripts/start-docker-postgres.sh* is a convenient way of creating a local db for testing.
+With these environment variables exported, the script
+*scripts/start-docker-postgres.sh* is a convenient way of creating a local db
+for testing.
 
 To initially setup the DB... `sudo -u postgres psql`, then, at the prompt:
 
@@ -144,7 +176,11 @@ create user "$CVTS_POSTGRES_USER" with encrypted password "$CVTS_POSTGRES_PASS";
 grant all privileges on database "$CVTS_POSTGRES_DB" to "$CVTS_POSTGRES_USER";
 ```
 
-To (completely reinstall postgres completely, (see
+Something very similar to this is available in the make target *setup-postgre*.
+It will use the username, password, PostgreSQL DB set in the environment
+variables *CVTS_POSTGRES_USER*, *CVTS_POSTGRES_PASS* and *CVTS_POSTGRES_DB*.
+
+To reinstall postgres completely, (see
 [this](https://askubuntu.com/questions/817868/how-do-i-reinstall-postgresql-9-5-on-ubuntu-xenial-16-04-1)):
 
 ```bash
@@ -152,3 +188,6 @@ sudo apt-get --purge remove postgresql-*
 sudo rm -Rf /etc/postgresql /var/lib/postgresql
 sudo apt-get install postgresql
 ```
+
+We use [sqlalchemy](https://www.sqlalchemy.org/) to define the DB and to access
+the DB. The models are defined in *cvts/models.py*.
