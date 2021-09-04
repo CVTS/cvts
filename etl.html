@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data ingestion &mdash; cvts 0.0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cvts 0.0.2 documentation" href="index.html"/>
+        <link rel="next" title="Valhalla Config and Gumpf" href="config.html"/>
+        <link rel="prev" title="cvts.tasks package" href="cvts.tasks.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cvts
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cvts.html">cvts package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data ingestion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hanel-s-raw-data">HANEL’s raw data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backup">Backup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extract-load-transform">Extract, Load &amp; Transform</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reference-database">Reference database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#separating-traces-per-vehicle">Separating traces per vehicle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#monthly-data">Monthly data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Valhalla Config and Gumpf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input.html">Inputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">Scripts</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cvts</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Data ingestion</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/etl.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="data-ingestion">
+<h1>Data ingestion<a class="headerlink" href="#data-ingestion" title="Permalink to this headline">¶</a></h1>
+<p>The raw data provided by HANEL comes in a format that is inadequate for most, if not all, analytics tasks performed
+with the data. For this reason,  processing the data into a format appropriate for our use is the first step in the
+generation of any analytical outputs.</p>
+<p>This process is commonly known as <a class="reference external" href="https://en.wikipedia.org/wiki/Extract,_transform,_load">Extract, Transform &amp; Load</a>
+and can (should) be designed with the analytics use cases in mind. However, there is absolutely no need to run this
+process more than once on the raw data</p>
+<section id="hanel-s-raw-data">
+<span id="hanel-data"></span><h2>HANEL’s raw data<a class="headerlink" href="#hanel-s-raw-data" title="Permalink to this headline">¶</a></h2>
+<p>The data received from HANEL has three important characteristics that make it inadequate for use for analytics in its
+original format:</p>
+<ol class="arabic simple">
+<li><p>It is sorted by timestamp rather than by vehicle, while most of the processing of the data is done byy vehicle</p></li>
+<li><p>It is in CSV format, which results in large files that take too much time to be loaded</p></li>
+<li><p>Contains redundant (vehicle type for each GPS record) and inefficient data types for work in memory (vehicle type
+and vehicle identifier are long strings)</p></li>
+</ol>
+<p>The data is organized in a directory for each calendar day, inside of which a series of CSV files with 10 million
+records each is placed. Each one of these data files has the following format.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vehicle</span><span class="p">,</span><span class="n">datetime</span><span class="p">,</span><span class="n">speed</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">heading</span><span class="p">,</span><span class="n">VehicleType</span>
+<span class="n">bOGJIXjzWD29JY24y3gT</span><span class="o">/</span><span class="n">g</span><span class="o">==</span><span class="p">,</span><span class="mi">1585780315</span><span class="p">,</span><span class="mf">10.0</span><span class="p">,</span><span class="mf">106.63020324707031</span><span class="p">,</span><span class="mf">10.768750190734863</span><span class="p">,</span><span class="mf">181.1</span><span class="p">,</span><span class="n">Xe</span> <span class="n">chưa</span> <span class="n">phân</span> <span class="n">loại</span>
+<span class="n">jKYkHRwBCATrWl4DkdWKFg</span><span class="o">==</span><span class="p">,</span><span class="mi">1585780321</span><span class="p">,</span><span class="mf">41.0</span><span class="p">,</span><span class="mf">106.79299926757812</span><span class="p">,</span><span class="mf">10.86571979522705</span><span class="p">,</span><span class="mf">130.0</span><span class="p">,</span><span class="n">Xe</span> <span class="n">chưa</span> <span class="n">phân</span> <span class="n">loại</span>
+<span class="n">LtonCPx</span><span class="o">/</span><span class="n">mO94YI9Kilaslg</span><span class="o">==</span><span class="p">,</span><span class="mi">1585766618</span><span class="p">,</span><span class="mf">44.0</span><span class="p">,</span><span class="mf">105.91528</span><span class="p">,</span><span class="mf">21.0087483333</span><span class="p">,</span><span class="mf">38.0</span><span class="p">,</span><span class="n">Xe</span> <span class="n">chưa</span> <span class="n">phân</span> <span class="n">loại</span>
+<span class="n">r9uDV7PxFpDQCxafwlWM4Q</span><span class="o">==</span><span class="p">,</span><span class="mi">1585780310</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">106.88480377197266</span><span class="p">,</span><span class="mf">10.93822956085205</span><span class="p">,</span><span class="mf">226.5</span><span class="p">,</span><span class="n">Xe</span> <span class="n">chưa</span> <span class="n">phân</span> <span class="n">loại</span>
+<span class="n">sERvntCTgLHdiG4PVypveA</span><span class="o">==</span><span class="p">,</span><span class="mi">1585780318</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">106.80950164794922</span><span class="p">,</span><span class="mf">10.780980110168457</span><span class="p">,</span><span class="mf">338.6</span><span class="p">,</span><span class="n">Xe</span> <span class="n">chưa</span> <span class="n">phân</span> <span class="n">loại</span>
+<span class="n">dS3IR9PjBoe3TXfTXM0g3Q</span><span class="o">==</span><span class="p">,</span><span class="mi">1585776052</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">105.819625</span><span class="p">,</span><span class="mf">10.134875</span><span class="p">,</span><span class="mf">296.0</span><span class="p">,</span><span class="n">Xe</span> <span class="n">chưa</span> <span class="n">phân</span> <span class="n">loại</span>
+<span class="n">nsqu7D3lW41PTR5h3syr</span><span class="o">+</span><span class="n">g</span><span class="o">==</span><span class="p">,</span><span class="mi">1585780336</span><span class="p">,</span><span class="mf">44.0</span><span class="p">,</span><span class="mf">106.11979675292969</span><span class="p">,</span><span class="mf">20.91621971130371</span><span class="p">,</span><span class="mf">78.5</span><span class="p">,</span><span class="n">Xe</span> <span class="n">chưa</span> <span class="n">phân</span> <span class="n">loại</span>
+<span class="n">n3sdB</span><span class="o">/</span><span class="n">si5JemE8XMifymLA</span><span class="o">==</span><span class="p">,</span><span class="mi">1585766618</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">105.2251966667</span><span class="p">,</span><span class="mf">21.1300333333</span><span class="p">,</span><span class="mf">272.0</span><span class="p">,</span><span class="n">Xe</span> <span class="n">chưa</span> <span class="n">phân</span> <span class="n">loại</span>
+</pre></div>
+</div>
+</section>
+<section id="backup">
+<span id="id1"></span><h2>Backup<a class="headerlink" href="#backup" title="Permalink to this headline">¶</a></h2>
+<p>Since the process of obtaining data from HANEL was expensive and time-consuming, it was reasonable to
+safeguard the data by backing up the raw data received in a format closest to the original so we
+could begin the processing from scratch at any point in time.</p>
+<p>Backing up the data in its original CSV format would require an unreasonable amount of disk space, so
+we did a little investigation on different formats we could use for such task, for which the results
+are shown below.</p>
+<p>All these tests were done with Pandas, as it provides a simple interface for loading the original CSV
+and saving in all of these formats and the times are for converting a single 10 million row CSV.</p>
+<a class="reference internal image-reference" href="_images/compression.png"><img alt="Compression performance" src="_images/compression.png" style="width: 960px;" /></a>
+<p>All all these formats, Zip, GZ and BZ2 are dominated by other alternatives, and therefore were discarded
+from further consideration.  Feather provided amazing compression speed (~1.5s), but the level of
+compression was too low, at about 42% of the original size.</p>
+<p>On the other end of the spectrum, LZMA was able to compress the data to roughly 12% of its original size,
+but took in excess of 800 seconds to do so, which would require over a day of processing time to compress
+one day of data (single threaded).</p>
+<p>We have then settled on using Parquet with Brotli compression, which was able to compress the data to
+just under 20% of its original size (19.7%), doing that in about 33s. When processing the data with multiple
+threads, it was possible to backup an entire month worth of data in less than 4h.</p>
+</section>
+<section id="extract-load-transform">
+<span id="etl"></span><h2>Extract, Load &amp; Transform<a class="headerlink" href="#extract-load-transform" title="Permalink to this headline">¶</a></h2>
+<p>Due to the volume of data and its organization, and to allow for the leveraging of as many threads as available in
+our infrastructure the data ingestion was divided into two phases:</p>
+<ol class="arabic simple">
+<li><p>Separation of the original data into one file per vehicle</p></li>
+<li><p>Consolidation of daily files into one file per vehicle per month</p></li>
+</ol>
+<p>During development, we verified that loading the Parquet files generated during the backup process is substantially
+faster than loading the original CSV files, and therefore we load the data from the backup rather than from the
+original CSV files.</p>
+<section id="reference-database">
+<span id="datalake-database"></span><h3>Reference database<a class="headerlink" href="#reference-database" title="Permalink to this headline">¶</a></h3>
+<p>Although we have opted to leave all the GPS data on disks as compressed files, as it will be discussed in the
+following sessions, we rely on the existence of a reference database to maintain a record of the correspondence between
+the original vehicle identifiers and their integer counterparts on our system, as well as the vehicle type of each
+of the vehicles for which data has been loaded.</p>
+<p>We also leverage the database to store summary statistics of for the data, particularly on the table <em>vehicle_days</em>,
+where we have one record for each day a vehicle has been active. For each one of these records we also include
+the number of GPS pings, the first and last active instants and the bounding box of the vehicle’s GPS trace as a
+Polygon.</p>
+<p>The point of this table is to provide a more powerful index of the data, as it allows for the filtering of the raw
+data to vehicles that operate during a certain period and region, as well as discard those which operate during a
+period too short or with too few GPS records to be deemed useful.</p>
+</section>
+<section id="separating-traces-per-vehicle">
+<span id="daily-processing"></span><h3>Separating traces per vehicle<a class="headerlink" href="#separating-traces-per-vehicle" title="Permalink to this headline">¶</a></h3>
+<p>The first process in the ingestion of the raw data provided by HANEL is to separate all data in separate datafiles
+for each vehicle available in the dataset. Since a large portion of the work is data compression</p>
+<p>The data format chosen for the vehicle specific datasets was GZIP, as Pandas allows one to stream the data into
+pre-existing files, enabling us to process each one of (or a set of) the original datasets at a time, cumulatively
+streaming the data into the original data files.</p>
+<p>During this step of the process a new unique integer identifier is assigned to each vehicle in the first time they
+are recorded, or their previously assigned identifier is retrieved from the database. During this step we also
+verify if a vehicle type has previously been assigned to each unique vehicle and update the vehicle type in the
+database whenever appropriate, as often the vehicle type available in large portions of the entries for each vehicle
+is the Vietnamese equivalent to “unclassified vehicle”.</p>
+<p>The core process is implemented to process a single day of data and a wrapper function implements a loop to
+process every day in a month with a single call.</p>
+</section>
+<section id="monthly-data">
+<span id="monthly-processing"></span><h3>Monthly data<a class="headerlink" href="#monthly-data" title="Permalink to this headline">¶</a></h3>
+<p>The second and final process of data ingestion is the consolidation of the vehicle-day files into a file per month.</p>
+<p>It is also during this stage that the statistics that go into the vehicle_days table in the reference database are
+computed and the database populated.</p>
+<p>The process is implemented to consolidate one month per call, and it also includes tests on integrity.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="config.html" class="btn btn-neutral float-right" title="Valhalla Config and Gumpf" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cvts.tasks.html" class="btn btn-neutral" title="cvts.tasks package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, Simon Knapp.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> and ❤️  using a custom <a href="https://github.com/LinxiFan/Sphinx-theme">theme</a> based on <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
