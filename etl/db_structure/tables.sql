@@ -1,6 +1,8 @@
-Create TABLE vehicles (vehicle_id        INTEGER NOT NULL PRIMARY KEY,
-                          vehicle_id_string TEXT    NOT NULL,
-                          vehicle_type_id   SMALLINT);
+CREATE SEQUENCE IF NOT EXISTS vehicles_vehicle_id_seq;
+
+Create TABLE vehicles (vehicle_id        SERIAL,
+                       vehicle_id_string TEXT    NOT NULL,
+                       vehicle_type_id   SMALLINT);
 
 CREATE UNIQUE INDEX unique_veh_id ON vehicles (vehicle_id_string);
 
