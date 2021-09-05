@@ -38,6 +38,13 @@ records each is placed. Each one of these data files has the following format.
     nsqu7D3lW41PTR5h3syr+g==,1585780336,44.0,106.11979675292969,20.91621971130371,78.5,Xe chưa phân loại
     n3sdB/si5JemE8XMifymLA==,1585766618,0.0,105.2251966667,21.1300333333,272.0,Xe chưa phân loại
 
+Data transfer
+-------------
+
+There is still no agreed-upon procedure for data transfer from HANEL to the FPT servers, and all transfers
+done to this point have been in an ad-hoc fashion. Further work for designing this process will be necessary
+should recurring data transfers be needed.
+
 .. _backup:
 
 Backup
@@ -135,4 +142,37 @@ It is also during this stage that the statistics that go into the vehicle_days t
 computed and the database populated.
 
 The process is implemented to consolidate one month per call, and it also includes tests on integrity.
+
+
+Running the software
+--------------------
+
+Running the software is still somewhat manual, as there is still no clarity on how data transfers will happen
+in the future. However, the software developed so far proved to be extremely fast and the data architecture
+very performant with regards data retrieval. We have also separated the environment requirements into its own
+*requirements.txt* for this process, as that would facilitate its testing, editing and documentation in the future.
+
+For all processes, the first step is to activate the Python environment with something like:
+
+::
+
+    . venv/bin/activate
+
+
+Running each process consists of the following:
+
+1. Data backup
+
+::
+
+    python3 compress_and_backup_month.py PATH_TO_THE_MONTH_DATA YYYY MM
+    # e.g. python3 compress_and_backup_month.py /mnt/csv_data/hanel/202007 2020 07
+
+
+2. Separating traces per vehicle
+
+::
+
+    python3 compress_and_backup_month.py PATH_TO_THE_MONTH_DATA YYYY MM
+    # e.g. python3 compress_and_backup_month.py /mnt/csv_data/hanel/202007 2020 07
 
