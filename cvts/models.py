@@ -43,7 +43,7 @@ class Base(DBase):
 class Stop(DBase):
     """The location a vehicle is garraged."""
     __tablename__ = 'stops'
-    id            = Column(Integer, primary_key=True)
+    id            = Column(BigInteger, primary_key=True)
     vehicle_id    = Column(Integer, ForeignKey('vehicles.id'))
     vehicle       = relationship('Vehicle', backref='stops')
     n_stationary  = Column(Integer)
@@ -58,14 +58,14 @@ class Stop(DBase):
 class Trip(DBase):
     """The location a vehicle is garraged."""
     __tablename__ = 'trips'
-    id            = Column(Integer, primary_key=True)
+    id            = Column(BigInteger, primary_key=True)
     vehicle_id    = Column(Integer, ForeignKey('vehicles.id'))
     vehicle       = relationship('Vehicle', backref='trips')
-    start_id      = Column(Integer, ForeignKey('stops.id'))
+    start_id      = Column(BigInteger, ForeignKey('stops.id'))
     start         = relationship('Stop',
             foreign_keys=[start_id],
             backref=backref('start', uselist=False))
-    end_id        = Column(Integer, ForeignKey('stops.id'))
+    end_id        = Column(BigInteger, ForeignKey('stops.id'))
     end           = relationship('Stop',
             foreign_keys=[end_id],
             backref=backref('end', uselist=False))
@@ -73,10 +73,10 @@ class Trip(DBase):
 class Traversal(DBase):
     """A traversal of a :py:class:`Segment`."""
     __tablename__ = 'traversals'
-    id            = Column(Integer, primary_key=True)
+    id            = Column(BigInteger, primary_key=True)
     vehicle_id    = Column(Integer, ForeignKey('vehicles.id'))
     vehicle       = relationship('Vehicle', backref='traversals')
-    trip_id       = Column(Integer, ForeignKey('trips.id'))
+    trip_id       = Column(BigInteger, ForeignKey('trips.id'))
     trip          = relationship('Trip', backref='traversals')
     edge          = Column(BigInteger) # will be unsigned 64 bit int
     timestamp     = Column(Integer)
