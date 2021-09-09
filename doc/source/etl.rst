@@ -173,6 +173,5 @@ Running each process consists of the following:
 
 ::
 
-    python3 compress_and_backup_month.py PATH_TO_THE_MONTH_DATA YYYY MM
-    # e.g. python3 compress_and_backup_month.py /mnt/csv_data/hanel/202007 2020 07
-
+    python3 ingest_month.py PATH_TO_THE_MONTH_DATA YYYY MM
+    # e.g. python3 ingest_month.py /mnt/backup_data/compressed_parquet/2020/07 2020 07

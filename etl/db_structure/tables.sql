@@ -6,7 +6,7 @@ CREATE UNIQUE INDEX unique_veh_id ON vehicles (vehicle_id_string);
 CREATE UNIQUE INDEX unique_veh_idx ON vehicles (vehicle_id);
 
 
-CREATE TABLE vehicle_types (id               SMALLINT NOT NULL,
+CREATE TABLE vehicle_types (id               SERIAL,
                             type_vn          TEXT,
                             type_en          TEXT,
                             group_name       TEXT,
