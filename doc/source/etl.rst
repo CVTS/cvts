@@ -175,3 +175,11 @@ Running each process consists of the following:
 
     python3 ingest_month.py PATH_TO_THE_MONTH_DATA YYYY MM
     # e.g. python3 ingest_month.py /mnt/backup_data/compressed_parquet/2020/07 2020 07
+
+
+3. Consolidating vehicle traces in one file per month
+
+::
+
+    python3 run_consolidation.py MM
+    # e.g. python3 run_consolidation.py 07
