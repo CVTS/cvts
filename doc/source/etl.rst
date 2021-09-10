@@ -18,7 +18,7 @@ HANEL's raw data
 The data received from HANEL has three important characteristics that make it inadequate for use for analytics in its
 original format:
 
-1. It is sorted by timestamp rather than by vehicle, while most of the processing of the data is done byy vehicle
+1. It is sorted by timestamp rather than by vehicle, while most of the processing of the data is done by vehicle
 2. It is in CSV format, which results in large files that take too much time to be loaded
 3. Contains redundant (vehicle type for each GPS record) and inefficient data types for work in memory (vehicle type
    and vehicle identifier are long strings)
@@ -65,7 +65,7 @@ and saving in all of these formats and the times are for converting a single 10 
     :width: 960
     :alt: Compression performance
 
-All all these formats, Zip, GZ and BZ2 are dominated by other alternatives, and therefore were discarded
+Three formats, Zip, GZ and BZ2 are dominated by other alternatives, and therefore were discarded
 from further consideration.  Feather provided amazing compression speed (~1.5s), but the level of
 compression was too low, at about 42% of the original size.
 
@@ -102,7 +102,7 @@ following sessions, we rely on the existence of a reference database to maintain
 the original vehicle identifiers and their integer counterparts on our system, as well as the vehicle type of each
 of the vehicles for which data has been loaded.
 
-We also leverage the database to store summary statistics of for the data, particularly on the table *vehicle_days*,
+We also leverage the database to store summary statistics of the data, particularly in the table *vehicle_days*,
 where we have one record for each day a vehicle has been active. For each one of these records we also include
 the number of GPS pings, the first and last active instants and the bounding box of the vehicle's GPS trace as a
 Polygon.
