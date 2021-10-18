@@ -1,5 +1,6 @@
 from math import floor, ceil
 import numpy as np
+import logging
 from scipy.ndimage import convolve
 
 
@@ -22,6 +23,7 @@ CELLSIZE =   0.1
 #: NA value to use for the raster 'covering' Vietnam.
 NA_VALUE = -9999
 
+logger = logging.getLogger(__name__)
 
 
 class Grid:
