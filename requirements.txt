@@ -1,4 +1,4 @@
-numpy==1.19.5
+numpy==1.21.0
 nptyping==1.4.1
 scipy==1.5.4
 Shapely==1.7.1
